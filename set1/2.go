@@ -16,9 +16,9 @@
 package main
 
 import (
-	"./krypt"
 	"fmt"
 	"strings"
+	"strconv"
 )
 
 var first = "1c0111001f010100061a024b53535009181c"
@@ -41,7 +41,36 @@ func arrayxor(f []byte, s []byte) []byte {
 	return ret
 }
 
+// Returns the hexadecimal values of a string with hexadecimal.
+func String2hex(s *[]byte) (ret *[]byte) {
+	ret := make([]byte, len(*s), cap(*s))
+	start := 0
+	if (*s)[0] == '0' && (*s[1] == 'x' || *s[1] == 'X') {
+		start = 2
+	}
+
+	// Appends byte if needed.
+	if len(*s) % 2 != 0 {
+		last := *s[len(s)-1]
+		*s = *s[:len(s)-1]
+		*s = append(s, '0', last)
+	}
+
+	for i := 0 ; i <= len(s); i+=2 {
+		strconv.ParseInt(*s[i:i+1], 16, 8)
+	}
+	return &ret
+}
+
 func main() {
+	for i,val := range first {
+		fmt.Printf("%x", first)
+	}
+	fmt.Printfln("")
+	for i,val := range String2hex(first) {
+		fmt.Printf("%x", val)
+	}
+	fmt.Printfln("")
 	fmt.Printf("First byte stream: %q\n", first)
 	fmt.Printf("Second byte stream: %q\n", second)
 	fmt.Printf("Correct result: %q\n", result)

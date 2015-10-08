@@ -17,7 +17,7 @@
 package main
 
 import (
-	"../krypt"
+	"mcccrypt"
 	"fmt"
 	"strings"
 )
@@ -32,7 +32,7 @@ func main() {
 	fmt.Printf("Test string: %q len(test): %d\n", test, len(test))
 	fmt.Printf("Correct result: %q len(result): %d\n", result, len(result))
 
-	base64 := krypt.Hex2base64([]byte(test))
+	base64 := mcccrypt.Hex2base64([]byte(test))
 	fmt.Printf("Our result: %s\n", base64)
 
 	if cmp := strings.Compare(result, base64); cmp != 0 {
