@@ -3,15 +3,21 @@
 # Copy the mcccrypt library to your GOPATH, and install it.
 # mcccrypt stands for matasano crypto challenge crypt.
 
-if [ $GOPATH == "" ]
+if test $GOPATH = ""
 then
-	echo "Please set the GOPATH variable."
+	echo "GOPATH not set"
+	exit
 fi
 
-export OBJECTIVE="$GOPATH/src/github.com/dplbsd/"
+export PREFIX="github.com/dplbsd/"
+export LIBPATH="${GOPATH}/src/${PREFIX}"
 
-mkdir -p $OBJECTIVE
-cp -r ./mcccrypt $OBJECTIVE
+if [ ! -d $LIBPATH ]
+then
+	mkdir -p $LIBPATH
+fi
 
-go build
-go install
+cp -r ./mcclib $LIBPATH
+
+go install ${PREFIX}/mcclib
+
