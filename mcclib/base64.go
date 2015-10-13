@@ -1,10 +1,9 @@
-package krypt
+package mcclib
 
-// The Matasano Crypto Challenge Crypto library implements a set of
-// cryptography primitives to be used with the
 import(
-	"strconv"
 )
+
+// This file implement all that you need to convert hexadecimal to base64.
 
 // Creates a base64 block (4 symbols) from 3 bytes.
 func hexblock2base64(hex []byte) (ret []byte) {
@@ -18,28 +17,8 @@ func hexblock2base64(hex []byte) (ret []byte) {
 	return
 }
 
-// Returns the hexadecimal values of a string with hexadecimal.
-func String2hex(s []byte) (ret []byte) {
-	start := 0
-	if s[0] == '0' && (s[1] == 'x' || s[1] == 'X') {
-		start = 2
-	}
-
-	// Appends byte if needed.
-	if len(s) % 2 != 0 {
-		last := s[len(s)-1]
-		s := s[:len(s)-1]
-		s = append(s, '0', last)
-	}
-
-	for i := 0 ; i <= len(s); i+=2 {
-		strconv.ParseInt(s[i:i+1], 16, 8)
-	}
-	return
-}
-
 // Hexadecimal to base 64.
-func Hex2base64(hex []byte) string {
+func Hex2base64(hex []byte) []byte {
 	var ret []byte;
 	// Add padding if needed.
 	for len(hex)%3 != 0 {
@@ -58,5 +37,6 @@ func Hex2base64(hex []byte) string {
 			ret[i] = '='
 		}
 	}
-	return string(ret)
+	return ret
 }
+
