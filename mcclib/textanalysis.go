@@ -36,7 +36,7 @@ var EnglishDist = LetterDist{
 	'y': 0.0145984,
 	'z': 0.0007836,
 	' ': 0.1918182,
-	}
+}
 
 // Returns the frequency of given symbol in s (will work for non-letters too).
 func SymbolFrequency(s []byte) (ret LetterDist) {
@@ -86,7 +86,7 @@ func IsDistSimilarTo(f LetterDist, s LetterDist) bool {
 		return false
 	}
 	for _, val := range matchingSymbols {
-		if (val > maxDiff) {
+		if val > maxDiff {
 			return false
 		}
 	}

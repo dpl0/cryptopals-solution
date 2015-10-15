@@ -27,9 +27,9 @@ import (
 const crypt = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
 
 func main() {
-	hexCrypt :=  mcc.String2Hex(crypt)
+	hexCrypt := mcc.String2Hex(crypt)
 	// Key has to be of type []byte, even if just one byte.
-	key  := []byte{0}
+	key := []byte{0}
 
 	for i := 0; i <= 255; i++ {
 		key[0] = byte(i)

@@ -1,6 +1,5 @@
 package mcclib
 
-
 // Returns the XOR of two arrays of same length.
 func ArrayXor(f []byte, s []byte) []byte {
 	l := len(f)

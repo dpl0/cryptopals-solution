@@ -18,4 +18,3 @@ func String2Hex(s string) (ret []byte) {
 func Hex2String(s []byte) string {
 	return hex.EncodeToString(s)
 }
-
