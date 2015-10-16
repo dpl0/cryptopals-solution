@@ -34,9 +34,9 @@ func main() {
 	fmt.Printf("Second byte stream: %q (%q)\n", second, stringSecond)
 	fmt.Printf("Correct result: %q (%q)\n", result, stringResult)
 
-	xor := mcc.ArrayXor(mcc.String2Hex(first), mcc.String2Hex(second))
-	stringXor := mcc.Hex2String(xor)
-	fmt.Printf("\nOur result: %q (%q)\n", stringXor, xor)
+	xor := mcc.ArrayXOR(mcc.String2Hex(first), mcc.String2Hex(second))
+	stringXOR := mcc.Hex2String(xor)
+	fmt.Printf("\nOur result: %q (%q)\n", stringXOR, xor)
 
 	if cmp := bytes.Compare(xor, mcc.String2Hex(result)); cmp != 0 {
 		fmt.Printf("Your code is wrong!\n")
