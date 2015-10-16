@@ -70,7 +70,7 @@ func IsDistSimilarTo(f LetterDist, s LetterDist) bool {
 			matchingSymbols[k] = math.Abs(f[k] - s[k])
 		}
 	}
-	// We now have to search the other way. This might be much easier with the
+	// We now have to search the other way. This could be much easier with the
 	// python-like set ^ operation.
 	for k, _ := range s {
 		if _, ok := f[k]; ok {
