@@ -60,10 +60,9 @@ func SymbolFrequency(s []byte) (ret LetterDist) {
 }
 
 // Compares a given distribution with another.
-// Returns true if there's a match within +- r.
-func IsDistSimilarTo(f LetterDist, s LetterDist) bool {
-	var eqSymbols = 15
-	var maxDiff = 0.1
+// Returns true if there's a match within +-maxDiff, and the result shares at
+// least eqSymbols symbols.
+func IsDistSimilarTo(f LetterDist, s LetterDist, maxDiff float64, eqSymbols int) bool {
 	var matchingSymbols LetterDist = make(LetterDist)
 	for k, _ := range f {
 		if _, ok := s[k]; ok {

@@ -33,9 +33,9 @@ func main() {
 
 	for i := 0; i <= 255; i++ {
 		key[0] = byte(i)
-		decrypted := mcc.KeyXor(key, []byte(hexCrypt))
+		decrypted := mcc.KeyXOR(key, []byte(hexCrypt))
 		freq := mcc.SymbolFrequency(decrypted)
-		if mcc.IsDistSimilarTo(freq, mcc.EnglishDist) {
+		if mcc.IsDistSimilarTo(freq, mcc.EnglishDist, 0.1, 16) {
 			fmt.Printf("KEY FOUND: %s: %s\n", key, decrypted)
 		}
 	}
