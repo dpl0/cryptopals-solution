@@ -8,6 +8,7 @@ type LetterDist map[byte]float64
 
 // Distribution of letters in English, from:
 // http://www.data-compression.com/english.html
+// No punctuation letters.
 var EnglishDist = LetterDist{
 	'a': 0.0651738,
 	'b': 0.0124248,
