@@ -1,15 +1,11 @@
-set(dirs
-    set1
-)
+function(add_file_and_link_without_filetype filename termination)
+    string(REGEX REPLACE ${filename} "" exe termination)
+    add_executable(${exe} ${filename})
+    if (DEBUG_LIB)
+        link_libraries(${exe} debug CryptoBreaker )
+    else (DEBUG_LIB)
+        link_libraries(${exe} optimized CryptoBreaker )
+    endif (DEBUG_LIB)
+endfunction(add_file_and_link_without_filetype)
 
-# Add all the directories in the set of dirs
-foreach(dir ${dirs})
-    add_subdirectory(${dir})
-endforeach(dir in dirs)
-
-# target_link_libraries()
-if (DEBUG)
-    link_libraries(${dirs} debug CryptoBreaker )
-else (DEBUG)
-    link_libraries(${dirs} optimized CryptoBreaker )
-endif (DEBUG)
+add_subdirectory(set1)
