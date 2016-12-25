@@ -14,38 +14,46 @@
 
 using namespace std;
 
-string& Utils::hexToBase64(string& s) {
-    ByteStream *raw = hexToByteStream(s);
-    std::string ret = byteStreamToBase64(raw);
+const string Utils::hexSymbols {"0123456789abcdef"};
+const string Utils::base64Symbols {"ABCDEFGHIJKLMNOPQRSTUVWXYZ" \
+                           "abcdefghijklmnopqrstuvwxyz0123456789+/"};
+
+const vector<uint64_t> Utils::b64ByteSel {0xfc0000, 0x03f000,
+                                                0x000fc0, 0x00003f};
+
+string Utils::hexToBase64(string &s) {
+    ByteStream raw = hexToByteStream(s);
+    string ret = byteStreamToBase64(raw);
     return ret;
 }
 
-string& Utils::base64ToHex(string& s) {
-    ByteStream *raw = base64ToByteStream(s);
-    std::string ret = byteStreamToHex(raw);
+string Utils::base64ToHex(string &s) {
+    ByteStream raw = base64ToByteStream(s);
+    string ret = byteStreamToHex(raw);
     return ret;
 }
 
-ByteStream * Utils::hexToByteStream(string &s) {
-    // // XXX There should be a better way, consider using something similar to
-    // // Java's Optional<>, or Maybe from Haskell
-    // assert(intput.length() % 2 == 0);
-    // ByteStream *bytes = new ByteStream;
+ByteStream Utils::hexToByteStream(string &s) {
+    assert(s.length() % 2 == 0);
+    ByteStream bytes = ByteStream();
 
-    // transform(s.begin(), s.end(), s.begin(), ::tolower);
-    // for (int i = 0; i < s.size(); i+=2) {
-    //     uint8_t w = hexValues.at((char)s[i])<<4| hexValues.at((char)s[i+1]);
-    //     bytes->push_back(w);
-    // }
-    // return bytes;
-    return new ByteStream;
+    for (int i = 0; i < s.size(); i+=2) {
+        bytes.push_back(buildHexDatum(s[i], s[i+1]));
+    }
+    return bytes;
 }
 
-ByteStream * Utils::base64ToByteStream(std::string&) {
-    return new ByteStream;
+uint8_t Utils::buildHexDatum(char a, char b) {
+    size_t aLocation = Utils::hexSymbols.find(tolower(a));
+    size_t bLocation = Utils::hexSymbols.find(tolower(b));
+    return (uint16_t) aLocation << 4 | bLocation;
 }
 
-std::string Utils::byteStreamToBase64(ByteStream* raw) {
+ByteStream Utils::base64ToByteStream(string &s) {
+    return ByteStream();
+}
+
+string Utils::byteStreamToBase64(ByteStream &raw) {
     // size_t ntriplets = (size_t)ceil(intput.length( )/ 3);
     // uint16_t lackingchars = input.length() % 3;
 
@@ -74,7 +82,7 @@ std::string Utils::byteStreamToBase64(ByteStream* raw) {
     return "";
 }
 
-std::string Utils::byteStreamToHex(ByteStream* raw) {
+string Utils::byteStreamToHex(ByteStream &raw) {
     return "";
 }
 

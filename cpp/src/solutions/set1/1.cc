@@ -24,12 +24,15 @@
 
 #include "Utils.h"
 
-int main() {
-    std::string input = "49276d206b696c6c696e6720796f757220627261696e206c696b" \
-                        "65206120706f69736f6e6f7573206d757368726f6f6d";
-    std::string output = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3V" \
-                         "zIG11c2hyb29t";
+using namespace std;
 
-    // std::string translated = Byte(input).hex2Base64();
-    // assert(translated == output);
+int main() {
+    string input = "49276d206b696c6c696e6720796f757220627261696e206c696b" \
+                        "65206120706f69736f6e6f7573206d757368726f6f6d";
+    string output = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3V" \
+                         "zIG11c2hyb29t";
+    string translated;
+
+    // string translated = Utils::hexToBase64(input);
+    assert(translated == output);
 }

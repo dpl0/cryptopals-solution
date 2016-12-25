@@ -4,19 +4,17 @@
 #include "Utils.h"
 
 using namespace testing;
+using namespace std;
 
 class ByteTesting: public testing::Test {
 public:
-    std::string emptyString = "";
+    string emptyString {""};
+    ByteStream emptyByteStream {""};
 };
 
 TEST_F(ByteTesting, returnsEmtpyString) {
-    ASSERT_THAT(Utils::hexToBase64(emptyString), Eq(""));
+    ASSERT_THAT(Utils::hexToByteStream(emptyString), Eq(emptyString));
 }
-
-// TEST_F(ByteTesting, EmptyWhenCreated) {
-//     ASSERT_THAT(bytes.empty(), Eq(true));
-// }
 
 int main(int argc, char *argv[]) {
     InitGoogleMock(&argc, argv);
