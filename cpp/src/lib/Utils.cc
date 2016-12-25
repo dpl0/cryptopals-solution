@@ -21,16 +21,13 @@ const string Utils::base64Symbols {"ABCDEFGHIJKLMNOPQRSTUVWXYZ" \
 const vector<uint64_t> Utils::b64ByteSel {0xfc0000, 0x03f000,
                                                 0x000fc0, 0x00003f};
 
-string Utils::hexToBase64(string &s) {
-    ByteStream raw = hexToByteStream(s);
-    string ret = byteStreamToBase64(raw);
-    return ret;
-}
+ByteStream Utils::asciiToByteStream(string &s) {
+    ByteStream bytes(2 * s.length());
 
-string Utils::base64ToHex(string &s) {
-    ByteStream raw = base64ToByteStream(s);
-    string ret = byteStreamToHex(raw);
-    return ret;
+    for (auto c: s) {
+        bytes.push_back((uint8_t) c);
+    }
+    return bytes;
 }
 
 ByteStream Utils::hexToByteStream(string &s) {
@@ -43,14 +40,12 @@ ByteStream Utils::hexToByteStream(string &s) {
     return bytes;
 }
 
-uint8_t Utils::buildHexDatum(char a, char b) {
-    size_t aLocation = Utils::hexSymbols.find(tolower(a));
-    size_t bLocation = Utils::hexSymbols.find(tolower(b));
-    return (uint16_t) aLocation << 4 | bLocation;
-}
-
 ByteStream Utils::base64ToByteStream(string &s) {
     return ByteStream();
+}
+
+string Utils::byteStreamToHex(ByteStream &raw) {
+    return "";
 }
 
 string Utils::byteStreamToBase64(ByteStream &raw) {
@@ -82,8 +77,26 @@ string Utils::byteStreamToBase64(ByteStream &raw) {
     return "";
 }
 
-string Utils::byteStreamToHex(ByteStream &raw) {
-    return "";
+// string Utils::byteStreamToAscii(ByteStream& raw) {
+//     return "";
+// }
+
+
+string Utils::hexToBase64(string &s) {
+    ByteStream raw = hexToByteStream(s);
+    string ret = byteStreamToBase64(raw);
+    return ret;
+}
+
+string Utils::base64ToHex(string &s) {
+    ByteStream raw = base64ToByteStream(s);
+    string ret = byteStreamToHex(raw);
+    return ret;
 }
 
 
+uint8_t Utils::buildHexDatum(char a, char b) {
+    size_t aLocation = Utils::hexSymbols.find(tolower(a));
+    size_t bLocation = Utils::hexSymbols.find(tolower(b));
+    return (uint16_t) aLocation << 4 | bLocation;
+}

@@ -20,11 +20,13 @@ private: // data
     static const vector<uint64_t> b64ByteSel;
 
 public:
+    static ByteStream asciiToByteStream(string&);
     static ByteStream hexToByteStream(string&);
     static ByteStream base64ToByteStream(string&);
 
     static string byteStreamToHex(ByteStream&);
     static string byteStreamToBase64(ByteStream&);
+    static string byteStreamToAscii(string&);
 
     static string hexToBase64(string&);
     static string base64ToHex(string&);
