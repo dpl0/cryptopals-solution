@@ -9,11 +9,11 @@ using namespace std;
 class ByteTesting: public testing::Test {
 public:
     string emptyString {""};
-    ByteStream emptyByteStream {""};
+    ByteStream emptyByteStream {};
 };
 
 TEST_F(ByteTesting, returnsEmtpyString) {
-    ASSERT_THAT(Utils::hexToByteStream(emptyString), Eq(emptyString));
+    ASSERT_THAT(Utils::hexToByteStream(emptyString), Eq(emptyByteStream));
 }
 
 int main(int argc, char *argv[]) {
