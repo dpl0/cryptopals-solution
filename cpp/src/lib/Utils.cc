@@ -54,11 +54,11 @@ string Utils::byteStreamToBase64(ByteStream &raw) {
     //         uint64_t data = s[i*1]|s[i*2]|s[i*3];
     //         printf("Triplet: 0x%x, (int)%lu\n", data, data);
     //         // Get the 4 symbols, separating 64 bits in 4 6-bits ints
-    //         uint8_t first = (uint8_t)((data & byteSel[0]) >> 56);
+    //         Byte first = (Byte & byteSel[0]) >> 56);
     //         printf("%x\n", first);
-    //         // uint8_t second = 
-    //         // uint8_t third = 
-    //         // uint8_t fourth = 
+    //         // Byte second = 
+    //         // Byte third = 
+    //         // Byte fourth = 
     //     }
 
     //     // cout << data << endl;
@@ -82,7 +82,7 @@ string Utils::base64ToHex(string &s) {
 }
 
 
-uint8_t Utils::buildHexDatum(char a, char b) {
+Byte Utils::buildHexDatum(char a, char b) {
     size_t aLocation = Utils::hexSymbols.find(tolower(a));
     size_t bLocation = Utils::hexSymbols.find(tolower(b));
     return (uint16_t) aLocation << 4 | bLocation;
