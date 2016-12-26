@@ -21,15 +21,6 @@ const string Utils::base64Symbols {"ABCDEFGHIJKLMNOPQRSTUVWXYZ" \
 const vector<uint64_t> Utils::b64ByteSel {0xfc0000, 0x03f000,
                                                 0x000fc0, 0x00003f};
 
-ByteStream Utils::asciiToByteStream(string &s) {
-    ByteStream bytes(2 * s.length());
-
-    for (auto c: s) {
-        bytes.push_back((uint8_t) c);
-    }
-    return bytes;
-}
-
 ByteStream Utils::hexToByteStream(string &s) {
     assert(s.length() % 2 == 0);
     ByteStream bytes = ByteStream();
@@ -76,10 +67,6 @@ string Utils::byteStreamToBase64(ByteStream &raw) {
     // }
     return "";
 }
-
-// string Utils::byteStreamToAscii(ByteStream& raw) {
-//     return "";
-// }
 
 
 string Utils::hexToBase64(string &s) {

@@ -12,17 +12,14 @@ public:
     ByteStream emptyByteStream {};
 
     string helloWorldAscii{"Hello, World!"};
-    string helloWorldHex{"Hello, World!"};
-    string helloWorldBase64{"Hello, World!"};
-    // ByteStream helloWorldByteStream{"Hello, World!"}
+    string helloWorldHex{"48656c6c6f2c20576f726c6421"};
+    string helloWorldBase64{"SGVsbG8sIFdvcmxkIQ=="};
+    ByteStream helloWorldByteStream{{0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20,
+                                     0x57, 0x6f, 0x72, 0x6c, 0x64, 0x21}};
 };
 
 TEST_F(ByteTesting, returnsEmtpyString) {
     ASSERT_THAT(Utils::hexToByteStream(emptyString), Eq(emptyByteStream));
-}
-
-TEST_F(ByteTesting, asciiToHexWorks) {
-    ASSERT_THAT(Utils::asciiToByteStream(emptyString), Eq(emptyByteStream));
 }
 
 
