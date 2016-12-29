@@ -1,5 +1,5 @@
 function(add_file_and_link_without_filetype filename termination)
-    string(REGEX REPLACE ${filename} "" exe termination)
+    string(REGEX REPLACE ${termination} "" exe ${filename})
     add_executable(${exe} ${filename})
     if (DEBUG_LIB)
         link_libraries(${exe} debug CryptoBreaker )
@@ -7,5 +7,8 @@ function(add_file_and_link_without_filetype filename termination)
         link_libraries(${exe} optimized CryptoBreaker )
     endif (DEBUG_LIB)
 endfunction(add_file_and_link_without_filetype)
+
+# Copy file so that it can be used later
+configure_file(./solve.sh ./solve.sh)
 
 add_subdirectory(set1)
