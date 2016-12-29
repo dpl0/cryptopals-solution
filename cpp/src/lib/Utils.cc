@@ -12,16 +12,16 @@
 
 #include "Utils.h"
 
-using namespace std;
 
-const string Utils::hexSymbols {"0123456789abcdef"};
-const string Utils::base64Symbols {"ABCDEFGHIJKLMNOPQRSTUVWXYZ" \
+const std::string Utils::hexSymbols {"0123456789abcdef"};
+const std::string Utils::base64Symbols {"ABCDEFGHIJKLMNOPQRSTUVWXYZ" \
                            "abcdefghijklmnopqrstuvwxyz0123456789+/"};
 
-const vector<uint64_t> Utils::b64ByteSel {0xfc0000, 0x03f000,
+const std::vector<uint64_t> Utils::b64ByteSel {0xfc0000, 0x03f000,
                                                 0x000fc0, 0x00003f};
 
-ByteStream Utils::hexToByteStream(string &s) {
+
+ByteStream Utils::hexToByteStream(std::string &s) {
     assert(s.length() % 2 == 0);
     ByteStream bytes = ByteStream();
 
@@ -31,15 +31,15 @@ ByteStream Utils::hexToByteStream(string &s) {
     return bytes;
 }
 
-ByteStream Utils::base64ToByteStream(string &s) {
+ByteStream Utils::base64ToByteStream(std::string &s) {
     return ByteStream();
 }
 
-string Utils::byteStreamToHex(ByteStream &raw) {
+std::string Utils::byteStreamToHex(ByteStream &raw) {
     return "";
 }
 
-string Utils::byteStreamToBase64(ByteStream &raw) {
+std::string Utils::byteStreamToBase64(ByteStream &raw) {
     // size_t ntriplets = (size_t)ceil(intput.length( )/ 3);
     // uint16_t lackingchars = input.length() % 3;
 
@@ -69,15 +69,15 @@ string Utils::byteStreamToBase64(ByteStream &raw) {
 }
 
 
-string Utils::hexToBase64(string &s) {
+std::string Utils::hexToBase64(std::string &s) {
     ByteStream raw = hexToByteStream(s);
-    string ret = byteStreamToBase64(raw);
+    std::string ret = byteStreamToBase64(raw);
     return ret;
 }
 
-string Utils::base64ToHex(string &s) {
+std::string Utils::base64ToHex(std::string &s) {
     ByteStream raw = base64ToByteStream(s);
-    string ret = byteStreamToHex(raw);
+    std::string ret = byteStreamToHex(raw);
     return ret;
 }
 

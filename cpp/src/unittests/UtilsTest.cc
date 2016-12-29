@@ -4,16 +4,15 @@
 #include "Utils.h"
 
 using namespace testing;
-using namespace std;
 
 class ByteTesting: public testing::Test {
 public:
-    string emptyString {""};
+    std::string emptyString {""};
     ByteStream emptyByteStream {};
 
-    string helloWorldAscii{"Hello, World!"};
-    string helloWorldHex{"48656c6c6f2c20576f726c6421"};
-    string helloWorldBase64{"SGVsbG8sIFdvcmxkIQ=="};
+    std::string helloWorldAscii{"Hello, World!"};
+    std::string helloWorldHex{"48656c6c6f2c20576f726c6421"};
+    std::string helloWorldBase64{"SGVsbG8sIFdvcmxkIQ=="};
 };
 
 TEST_F(ByteTesting, returnsEmtpyString) {
