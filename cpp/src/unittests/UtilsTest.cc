@@ -15,9 +15,20 @@ public:
     std::string helloWorldBase64{"SGVsbG8sIFdvcmxkIQ=="};
 };
 
-TEST_F(ByteTesting, returnsEmtpyString) {
-    ASSERT_THAT(Utils::hexToByteStream(emptyString), Eq(emptyByteStream));
-}
+// TEST_F(ByteTesting, returnsEmtpyString) {
+//     ASSERT_THAT(Utils::hexToByteStream(emptyString), Eq(emptyByteStream));
+// }
+
+// TEST_F(ByteTesting, asciiToHexWorks) {
+//     ASSERT_THAT(Utils::byteStreamToHex((ByteStream)helloWorldAscii),
+//             Eq(helloWorldHex));
+// }
+
+// TEST_F(ByteTesting, hexToAsciiWorks) {
+//     ASSERT_THAT(Utils::hexToByteStream(helloWorldHex),
+//             Eq(helloWorldAscii));
+// }
+
 
 
 int main(int argc, char *argv[]) {
