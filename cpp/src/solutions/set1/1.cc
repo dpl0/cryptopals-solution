@@ -29,8 +29,7 @@ int main() {
                         "65206120706f69736f6e6f7573206d757368726f6f6d";
     std::string output = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3V" \
                          "zIG11c2hyb29t";
-                         "zIG11c2hyb29t";
 
-    // std::string translated = Utils::hexToBase64(input);
+    std::string translated = Utils::hexToBase64(input);
     assert(translated == output);
 }
