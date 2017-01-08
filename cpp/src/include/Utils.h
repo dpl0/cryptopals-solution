@@ -9,14 +9,15 @@
 
 using namespace std;
 
-typedef uint8_t Byte;
-typedef vector<uint8_t> ByteStream;
+using Byte = uint8_t;
+using ByteStream = vector<Byte>;
+
 
 class Utils {
 private: // data
     static const string hexSymbols;
     static const string base64Symbols;
-    static const map<char, uint8_t> hexValues;
+    static const map<char, Byte> hexValues;
     static const vector<uint64_t> b64ByteSel;
 
 public:
@@ -28,6 +29,7 @@ public:
 
     static string hexToBase64(string&);
     static string base64ToHex(string&);
+
 private:
     // Auxiliary
     static uint8_t buildHexDatum(char a, char b);
