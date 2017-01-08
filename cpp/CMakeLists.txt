@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 enable_testing()
-project(CryptoPalsBreaker CXX)
+project(CryptoBreaker CXX)
 
 set(CMAKE_C_COMPILER clang)
 set(CMAKE_CXX_COMPILER clang++)
