@@ -19,29 +19,42 @@ const std::string Utils::base64Symbols {"ABCDEFGHIJKLMNOPQRSTUVWXYZ" \
 
 const std::vector<uint64_t> Utils::b64ByteSel {0xfc0000, 0x03f000,
                                                 0x000fc0, 0x00003f};
-
-
-ByteStream Utils::hexToByteStream(std::string &s) {
-    assert(s.length() % 2 == 0);
-    ByteStream bytes = ByteStream();
-
-    for (int i = 0; i < s.size(); i+=2) {
-        bytes.push_back(buildHexDatum(s[i], s[i+1]));
-    }
-    return bytes;
+// Encoding functions
+ByteStream Utils::encodeAsAscii(std::string &s) {
+    return ByteStream{s.begin(), s.end()};
 }
 
-ByteStream Utils::base64ToByteStream(std::string &s) {
+ByteStream Utils::encodeAsHex(std::string &s) {
+    assert(s.length() % 2 == 0);
+    ByteStream retval{};
+
+    // XXX This can be improved with std algorithms, surely.
+    for (int i = 0; i < s.size(); i+=2) {
+        retval.push_back(Utils::buildByteFromHex(s[i], s[i+1]));
+    }
+    return retval;
+}
+
+ByteStream Utils::encodeAsBase64(std::string &s) {
     return ByteStream();
 }
 
-std::string Utils::byteStreamToHex(ByteStream &raw) {
-    return "";
+// Decoding functions
+std::string Utils::decodeAsAscii(ByteStream &stream) {
+    return std::string{begin(stream), end(stream)};
 }
 
-std::string Utils::byteStreamToBase64(ByteStream &raw) {
-    // size_t ntriplets = (size_t)ceil(intput.length( )/ 3);
-    // uint16_t lackingchars = input.length() % 3;
+std::string Utils::decodeAsHex(ByteStream &stream) {
+    std::string retval;
+    for (auto b: stream) {
+        retval += buildHexFromByte(b);
+    }
+    return retval;
+}
+
+std::string Utils::decodeAsBase64(ByteStream &stream) {
+    // size_t ntriplets = (size_t)ceil(stream.length( )/ 3);
+    // uint16_t lackingchars = stream.length() % 3;
 
     // // Separate triplets into sets of four symbols.
     // for (size_t i = 0; i < ntriplets; i++)
@@ -69,21 +82,29 @@ std::string Utils::byteStreamToBase64(ByteStream &raw) {
 }
 
 
+// Complex operations
 std::string Utils::hexToBase64(std::string &s) {
-    ByteStream raw = hexToByteStream(s);
-    std::string ret = byteStreamToBase64(raw);
+    ByteStream stream = encodeAsHex(s);
+    std::string ret = decodeAsBase64(stream);
     return ret;
 }
 
 std::string Utils::base64ToHex(std::string &s) {
-    ByteStream raw = base64ToByteStream(s);
-    std::string ret = byteStreamToHex(raw);
+    ByteStream stream = encodeAsBase64(s);
+    std::string ret = decodeAsHex(stream);
     return ret;
 }
 
 
-Byte Utils::buildHexDatum(char a, char b) {
-    size_t aLocation = Utils::hexSymbols.find(tolower(a));
-    size_t bLocation = Utils::hexSymbols.find(tolower(b));
+// Auxiliary functions
+Byte Utils::buildByteFromHex(char a, char b) {
+    size_t aLocation = hexSymbols.find(tolower(a));
+    size_t bLocation = hexSymbols.find(tolower(b));
     return (uint16_t) aLocation << 4 | bLocation;
+}
+
+std::string Utils::buildHexFromByte(Byte b) {
+    char topChar{hexSymbols[(b & 0xf0) >> 4]};
+    char bottomChar{hexSymbols[b & 0x0f]};
+    return std::string{topChar, bottomChar};
 }

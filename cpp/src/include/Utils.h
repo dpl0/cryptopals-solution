@@ -21,18 +21,21 @@ private: // data
     static const vector<uint64_t> b64ByteSel;
 
 public:
-    static ByteStream hexToByteStream(string&);
-    static ByteStream base64ToByteStream(string&);
+    static ByteStream encodeAsAscii(string&);
+    static ByteStream encodeAsHex(string&);
+    static ByteStream encodeAsBase64(string&);
 
-    static string byteStreamToHex(ByteStream&);
-    static string byteStreamToBase64(ByteStream&);
+    static string decodeAsAscii(ByteStream&);
+    static string decodeAsHex(ByteStream&);
+    static string decodeAsBase64(ByteStream&);
 
     static string hexToBase64(string&);
     static string base64ToHex(string&);
 
 private:
     // Auxiliary
-    static uint8_t buildHexDatum(char a, char b);
+    static Byte buildByteFromHex(char a, char b);
+    static std::string buildHexFromByte(Byte b);
 };
 
 #endif //CRYPTOBREAKER_BYTE_H
