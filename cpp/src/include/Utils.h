@@ -29,6 +29,7 @@ public:
     static string decodeAsHex(ByteStream&);
     static string decodeAsBase64(ByteStream&);
 
+    // Perform complex operations in an easy way.
     static string hexToBase64(string&);
     static string base64ToHex(string&);
 
