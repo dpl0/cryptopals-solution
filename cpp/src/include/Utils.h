@@ -7,36 +7,47 @@
 
 #include <stdint.h>
 
-using namespace std;
-
 using Byte = uint8_t;
-using ByteStream = vector<Byte>;
+using ByteStream = std::vector<Byte>;
 
 
 class Utils {
 private: // data
-    static const string hexSymbols;
-    static const string base64Symbols;
-    static const map<char, Byte> hexValues;
-    static const vector<uint64_t> b64ByteSel;
+    static const std::string hexSymbols;
+    static const std::string base64Symbols;
+    static const std::map<char, Byte> hexValues;
 
 public:
-    static ByteStream encodeAsAscii(string&);
-    static ByteStream encodeAsHex(string&);
-    static ByteStream encodeAsBase64(string&);
+    static std::vector<std::string> splitInChunks(std::string&, int);
+    static std::vector<ByteStream> splitInChunks(ByteStream&, int);
 
-    static string decodeAsAscii(ByteStream&);
-    static string decodeAsHex(ByteStream&);
-    static string decodeAsBase64(ByteStream&);
+    static ByteStream encodeAsAscii(std::string&);
+    static ByteStream encodeAsHex(std::string&);
+    static ByteStream encodeAsBase64(std::string&);
+
+    static std::string decodeAsAscii(ByteStream&);
+    static std::string decodeAsHex(ByteStream&);
+    static std::string decodeAsBase64(ByteStream&);
 
     // Perform complex operations in an easy way.
-    static string hexToBase64(string&);
-    static string base64ToHex(string&);
+    static std::string asciiToHex(std::string&);
+    static std::string asciiToByteStream(std::string&);
+    static std::string hexToAscii(std::string&);
+    static std::string hexToBase64(std::string&);
+    static std::string base64ToAscii(std::string&);
+    static std::string base64ToHex(std::string&);
 
 private:
-    // Auxiliary
-    static Byte buildByteFromHex(char a, char b);
-    static std::string buildHexFromByte(Byte b);
+    static Byte buildByteFromHex(char&, char&);
+    static std::string buildHexFromByte(Byte&);
+
+    static ByteStream encodeBase64Block(std::string&);
+    static std::string decodeBase64Block(ByteStream&);
 };
+
+namespace Debug {
+    std::string byteToBinaryString(Byte);
+    std::string byteStreamToBinaryString(ByteStream&);
+}
 
 #endif //CRYPTOBREAKER_BYTE_H
