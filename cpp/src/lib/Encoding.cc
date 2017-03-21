@@ -1,6 +1,7 @@
 #include <string>
 #include <cassert>
 
+#include "Common.h"
 #include "Utils.h"
 #include "Encoding.h"
 

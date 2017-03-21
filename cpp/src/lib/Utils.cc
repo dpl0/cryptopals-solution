@@ -1,14 +1,10 @@
 #include <iostream>
-#include <algorithm>
-#include <map>
 #include <string>
 #include <vector>
-#include <cmath>
-#include <cctype>
-#include <stdint.h>
 
-#include <stdio.h>
-#include <assert.h>
+#include <cctype>
+#include <cstdint>
+#include <cassert>
 
 #include "Utils.h"
 

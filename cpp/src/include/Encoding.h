@@ -1,7 +1,7 @@
 #ifndef CRYPTOBREAKER_ENCODING_H
 #define CRYPTOBREAKER_ENCODING_H
 
-#include "Utils.h"
+#include "Common.h"
 
 namespace Encoding {
     const std::string hexSymbols = "0123456789abcdef";

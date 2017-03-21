@@ -1,14 +1,9 @@
-#ifndef CRYPTOBREAKER_BYTE_H
-#define CRYPTOBREAKER_BYTE_H
+#ifndef CRYPTOBREAKER_UTILS_H
+#define CRYPTOBREAKER_UTILS_H
 
 #include <string>
 #include <vector>
-#include <map>
-
-#include <stdint.h>
-
-using Byte = uint8_t;
-using ByteStream = std::vector<Byte>;
+#include "Common.h"
 
 namespace Utils {
     std::vector<std::string> splitInChunks(std::string&, int);
@@ -20,4 +15,4 @@ namespace Debug {
     std::string byteStreamToBinaryString(ByteStream&);
 }
 
-#endif //CRYPTOBREAKER_BYTE_H
+#endif //CRYPTOBREAKER_UTILS_H
