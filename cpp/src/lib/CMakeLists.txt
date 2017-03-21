@@ -12,6 +12,7 @@ endif (DEBUG_LIB)
 set(files
     Utils.cc
     Encoding.cc
+    Xor.cc
 )
 
 add_library(CryptoBreaker SHARED ${files})

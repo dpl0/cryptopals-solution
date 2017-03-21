@@ -2,6 +2,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../../include/")
 
 set(files
     1.cc
+    2.cc
 )
 
 foreach(f ${files})

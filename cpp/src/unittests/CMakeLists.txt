@@ -15,4 +15,5 @@ set(CMAKE_CXX_FLAGS "${CMAXE_CXX_FLAGS} -std=c++14 -g -O0 -Wall")
 
 add_test_and_libraries(UtilsTest "UtilsTest.cc")
 add_test_and_libraries(EncodingTest "EncodingTest.cc")
+add_test_and_libraries(XorTest "XorTest.cc")
 
