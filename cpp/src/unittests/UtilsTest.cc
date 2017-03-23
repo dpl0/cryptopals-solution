@@ -17,11 +17,11 @@ public:
 
 // Simplest case
 TEST_F(DebugTesting, byteToString) {
-    ASSERT_THAT(Debug::byteToBinaryString(one), Eq(oneString));
+    ASSERT_THAT(CB::Debug::byteToBinaryString(one), Eq(oneString));
 }
 
 TEST_F(DebugTesting, byteStreamToString) {
-    ASSERT_THAT(Debug::byteStreamToBinaryString(twentyOneTwice), Eq(twentyOneString));
+    ASSERT_THAT(CB::Debug::byteStreamToBinaryString(twentyOneTwice), Eq(twentyOneString));
 }
 // } Debug
 
@@ -54,15 +54,15 @@ public:
 
 // Split in blocks
 TEST_F(ByteTesting, splitInChunksString) {
-    ASSERT_THAT(Utils::splitInChunks(helloWorldAscii, 1), Eq(helloWorldAsciiBlocked1Char));
-    ASSERT_THAT(Utils::splitInChunks(helloWorldAscii, 2), Eq(helloWorldAsciiBlocked2Char));
-    ASSERT_THAT(Utils::splitInChunks(helloWorldAscii, 3), Eq(helloWorldAsciiBlocked3Char));
+    ASSERT_THAT(CB::Utils::splitInChunks(helloWorldAscii, 1), Eq(helloWorldAsciiBlocked1Char));
+    ASSERT_THAT(CB::Utils::splitInChunks(helloWorldAscii, 2), Eq(helloWorldAsciiBlocked2Char));
+    ASSERT_THAT(CB::Utils::splitInChunks(helloWorldAscii, 3), Eq(helloWorldAsciiBlocked3Char));
 }
 
 TEST_F(ByteTesting, splitInChunksByteStream) {
-    ASSERT_THAT(Utils::splitInChunks(helloWorldByteStream, 1), Eq(helloWorldByteStreamBlocked1Byte));
-    ASSERT_THAT(Utils::splitInChunks(helloWorldByteStream, 2), Eq(helloWorldByteStreamBlocked2Byte));
-    ASSERT_THAT(Utils::splitInChunks(helloWorldByteStream, 3), Eq(helloWorldByteStreamBlocked3Byte));
+    ASSERT_THAT(CB::Utils::splitInChunks(helloWorldByteStream, 1), Eq(helloWorldByteStreamBlocked1Byte));
+    ASSERT_THAT(CB::Utils::splitInChunks(helloWorldByteStream, 2), Eq(helloWorldByteStreamBlocked2Byte));
+    ASSERT_THAT(CB::Utils::splitInChunks(helloWorldByteStream, 3), Eq(helloWorldByteStreamBlocked3Byte));
 }
 
 

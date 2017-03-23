@@ -1,7 +1,7 @@
 #include <string>
 
 #include "gmock/gmock.h"
-#include "Xor.h"
+#include "Utils.h"
 
 using namespace testing;
 
@@ -14,12 +14,12 @@ public:
 };
 
 TEST_F(XorTesting, applyXor) {
-    ASSERT_THAT(Xor::XorByteStreams(first, second), Eq(result));
-    ASSERT_THAT(Xor::XorByteStreams(first, second, 1), Eq(result));
+    ASSERT_THAT(CB::Utils::XorByteStreams(first, second), Eq(result));
+    ASSERT_THAT(CB::Utils::XorByteStreams(first, second, 1), Eq(result));
 }
 
 TEST_F(XorTesting, applySizedXor) {
-    ASSERT_THAT(Xor::XorByteStreams(first, second, 2), Eq(error));
+    ASSERT_THAT(CB::Utils::XorByteStreams(first, second, 2), Eq(error));
 }
 
 

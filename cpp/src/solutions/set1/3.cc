@@ -23,6 +23,6 @@
 #include <assert.h>
 
 #include "Utils.h"
-#include "Xor.h"
-#include "Encoding.h"
 
+int main () {
+}

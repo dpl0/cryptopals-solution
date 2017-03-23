@@ -2,7 +2,6 @@
 #define CRYPTOBREAKER_COMMON_H
 
 #include <vector>
-
 #include <stdint.h>
 
 // Common types through the library.

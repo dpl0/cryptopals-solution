@@ -29,13 +29,13 @@ int main() {
     std::string xorTo  = "686974207468652062756c6c277320657965";
     std::string output = "746865206b696420646f6e277420706c6179";
 
-    ByteStream inputBS = Encoding::encodeAsHex(input);
-    ByteStream xorToBS = Encoding::encodeAsHex(xorTo);
-    ByteStream outputBS = Encoding::encodeAsHex(output);
+    ByteStream inputBS =  CB::Utils::encodeAsHex(input);
+    ByteStream xorToBS =  CB::Utils::encodeAsHex(xorTo);
+    ByteStream outputBS = CB::Utils::encodeAsHex(output);
 
-    ByteStream xoredBS = Xor::XorByteStreams(inputBS, xorToBS);
+    ByteStream xoredBS = CB::Utils::XorByteStreams(inputBS, xorToBS);
 
-    assert(Encoding::decodeAsHex(xoredBS) == output);
+    assert(CB::Utils::decodeAsHex(xoredBS) == output);
 }
 
 

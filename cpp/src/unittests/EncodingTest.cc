@@ -1,7 +1,7 @@
 #include <string>
 
 #include "gmock/gmock.h"
-#include "Encoding.h"
+#include "Utils.h"
 
 using namespace testing;
 
@@ -41,45 +41,45 @@ public:
 // Coding and decoding
 // Simplest case
 TEST_F(ByteTesting, emptyStringsWork) {
-    ASSERT_THAT(Encoding::encodeAsAscii(emptyString), Eq(emptyByteStream));
-    ASSERT_THAT(Encoding::encodeAsHex(emptyString), Eq(emptyByteStream));
-    ASSERT_THAT(Encoding::encodeAsBase64(emptyString), Eq(emptyByteStream));
+    ASSERT_THAT(CB::Utils::encodeAsAscii(emptyString), Eq(emptyByteStream));
+    ASSERT_THAT(CB::Utils::encodeAsHex(emptyString), Eq(emptyByteStream));
+    ASSERT_THAT(CB::Utils::encodeAsBase64(emptyString), Eq(emptyByteStream));
 }
 
 // ASCII
 TEST_F(ByteTesting, asciiToByteStream) {
-    ASSERT_THAT(Encoding::encodeAsAscii(helloWorldAscii),
+    ASSERT_THAT(CB::Utils::encodeAsAscii(helloWorldAscii),
                                             Eq(helloWorldByteStream));
 }
 
 TEST_F(ByteTesting, byteStreamToAscii) {
-    ASSERT_THAT(Encoding::decodeAsAscii(helloWorldByteStream),
+    ASSERT_THAT(CB::Utils::decodeAsAscii(helloWorldByteStream),
                                             Eq(helloWorldAscii));
 }
 
 // Hexadecimal
 TEST_F(ByteTesting, hexToByteStream) {
-    ASSERT_THAT(Encoding::encodeAsHex(helloWorldHex), Eq(helloWorldByteStream));
+    ASSERT_THAT(CB::Utils::encodeAsHex(helloWorldHex), Eq(helloWorldByteStream));
 }
 
 TEST_F(ByteTesting, byteStreamToHex) {
-    ASSERT_THAT(Encoding::decodeAsHex(helloWorldByteStream), Eq(helloWorldHex));
+    ASSERT_THAT(CB::Utils::decodeAsHex(helloWorldByteStream), Eq(helloWorldHex));
 }
 
 // Base64
 TEST_F(ByteTesting, base64ToByteStream) {
-    // ASSERT_THAT((ByteStream)Encoding::encodeAsBase64(text1GroupBase64), Eq(text1GroupByteStream));
-    // ASSERT_THAT(Encoding::encodeAsBase64(text2GroupsBase64), Eq(text2GroupsByteStream));
-    // ASSERT_THAT(Encoding::encodeAsBase64(text1Group1CharBase64), Eq(text1Group1CharByteStream));
-    // ASSERT_THAT(Encoding::encodeAsBase64(helloWorldBase64), Eq(helloWorldByteStream));
+    // ASSERT_THAT((ByteStream)CB::Utils::encodeAsBase64(text1GroupBase64), Eq(text1GroupByteStream));
+    // ASSERT_THAT(CB::Utils::encodeAsBase64(text2GroupsBase64), Eq(text2GroupsByteStream));
+    // ASSERT_THAT(CB::Utils::encodeAsBase64(text1Group1CharBase64), Eq(text1Group1CharByteStream));
+    // ASSERT_THAT(CB::Utils::encodeAsBase64(helloWorldBase64), Eq(helloWorldByteStream));
 }
 
 TEST_F(ByteTesting, byteStreamToBase64) {
-    ASSERT_THAT(Encoding::decodeAsBase64(text1GroupByteStream), Eq(text1GroupBase64));
-    ASSERT_THAT(Encoding::decodeAsBase64(text2GroupsByteStream), Eq(text2GroupsBase64));
-    ASSERT_THAT(Encoding::decodeAsBase64(text1Group1CharByteStream), Eq(text1Group1CharBase64));
-    ASSERT_THAT(Encoding::decodeAsBase64(text1Group2CharsByteStream), Eq(text1Group2CharsBase64));
-    ASSERT_THAT(Encoding::decodeAsBase64(helloWorldByteStream), Eq(helloWorldBase64));
+    ASSERT_THAT(CB::Utils::decodeAsBase64(text1GroupByteStream), Eq(text1GroupBase64));
+    ASSERT_THAT(CB::Utils::decodeAsBase64(text2GroupsByteStream), Eq(text2GroupsBase64));
+    ASSERT_THAT(CB::Utils::decodeAsBase64(text1Group1CharByteStream), Eq(text1Group1CharBase64));
+    ASSERT_THAT(CB::Utils::decodeAsBase64(text1Group2CharsByteStream), Eq(text1Group2CharsBase64));
+    ASSERT_THAT(CB::Utils::decodeAsBase64(helloWorldByteStream), Eq(helloWorldBase64));
 }
 
 

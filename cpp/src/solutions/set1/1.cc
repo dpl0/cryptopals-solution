@@ -22,7 +22,7 @@
 #include <iostream>
 #include <assert.h>
 
-#include "Encoding.h"
+#include "Utils.h"
 
 int main() {
     std::string input = "49276d206b696c6c696e6720796f757220627261696e206c696b" \
@@ -30,6 +30,6 @@ int main() {
     std::string output = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3V" \
                          "zIG11c2hyb29t";
 
-    std::string translated = Encoding::hexToBase64(input);
+    std::string translated = CB::Utils::hexToBase64(input);
     assert(translated == output);
 }
