@@ -1,11 +1,10 @@
 #include <string>
 
 #include "gmock/gmock.h"
-#include "Utils.h"
+#include "Utils.hpp"
 
 using namespace testing;
 
-// { Debug
 class DebugTesting: public testing::Test {
 public:
     Byte one{0x1};
@@ -23,7 +22,6 @@ TEST_F(DebugTesting, byteToString) {
 TEST_F(DebugTesting, byteStreamToString) {
     ASSERT_THAT(CB::Debug::byteStreamToBinaryString(twentyOneTwice), Eq(twentyOneString));
 }
-// } Debug
 
 
 class ByteTesting: public testing::Test {
@@ -64,8 +62,6 @@ TEST_F(ByteTesting, splitInChunksByteStream) {
     ASSERT_THAT(CB::Utils::splitInChunks(helloWorldByteStream, 2), Eq(helloWorldByteStreamBlocked2Byte));
     ASSERT_THAT(CB::Utils::splitInChunks(helloWorldByteStream, 3), Eq(helloWorldByteStreamBlocked3Byte));
 }
-
-
 
 
 int main(int argc, char *argv[]) {

@@ -3,12 +3,12 @@
 
 #include <string>
 #include <vector>
-#include "Common.h"
+#include "Common.hpp"
 
 namespace CB {
     namespace Utils {
         std::vector<std::string> splitInChunks(std::string&, int);
-        std::vector<ByteStream> splitInChunks(ByteStream&, int);
+        std::vector<std::vector<Byte> > splitInChunks(std::vector<Byte>&t, int);
 
         ByteStream encodeAsAscii(std::string&);
         ByteStream encodeAsHex(std::string&);

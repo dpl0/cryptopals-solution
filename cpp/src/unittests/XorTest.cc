@@ -1,7 +1,7 @@
 #include <string>
 
 #include "gmock/gmock.h"
-#include "Utils.h"
+#include "Utils.hpp"
 
 using namespace testing;
 

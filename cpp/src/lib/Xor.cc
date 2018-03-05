@@ -1,5 +1,5 @@
-#include "Xor.h"
-#include "Utils.h"
+#include "Xor.hpp"
+#include "Utils.hpp"
 
 namespace Xor {
     ByteStream

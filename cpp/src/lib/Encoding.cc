@@ -1,9 +1,9 @@
 #include <string>
 #include <cassert>
 
-#include "Common.h"
-#include "Utils.h"
-#include "Encoding.h"
+#include "Common.hpp"
+#include "Utils.hpp"
+#include "Encoding.hpp"
 
 namespace Encoding {
 
@@ -50,11 +50,9 @@ std::string decodeAsHex(ByteStream &stream) {
 
 std::string decodeAsBase64(ByteStream &stream) {
     std::string retval;
-
     for (auto b: Utils::splitInChunks(stream, 3)) {
          retval.append(decodeBase64Block(b));
     }
-
     return retval;
 }
 

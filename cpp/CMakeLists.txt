@@ -5,7 +5,11 @@ project(CryptoBreaker CXX)
 
 set(CMAKE_C_COMPILER clang)
 set(CMAKE_CXX_COMPILER clang++)
+
+
+add_compile_options(-std=c++14 -Wall -Wpedantic)
 option(DEBUG_LIB "Use library with debugging symbols" ON)
+
 
 add_custom_target(solve
     COMMAND ./solve.sh

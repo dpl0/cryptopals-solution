@@ -22,7 +22,7 @@
 #include <iostream>
 #include <assert.h>
 
-#include "Utils.h"
+#include "Utils.hpp"
 
 int main () {
 }

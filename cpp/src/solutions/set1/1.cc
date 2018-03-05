@@ -22,7 +22,9 @@
 #include <iostream>
 #include <assert.h>
 
-#include "Utils.h"
+// #include "Utils.hpp"
+#include "Common.hpp"
+#include "ByteStream.hpp"
 
 int main() {
     std::string input = "49276d206b696c6c696e6720796f757220627261696e206c696b" \
@@ -30,6 +32,10 @@ int main() {
     std::string output = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3V" \
                          "zIG11c2hyb29t";
 
-    std::string translated = CB::Utils::hexToBase64(input);
+    // std::string translated = CB::Utils::hexToBase64(input);
+    CB::ByteStream stream = CB::ByteStream(input, coding::base64);
+    std::string translated = stream.decodeAs(coding::ascii);
+
+    // std::string translated = CB::ByteStream(input).decodeAs("ASCII");
     assert(translated == output);
 }
