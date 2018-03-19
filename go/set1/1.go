@@ -17,9 +17,9 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
-	mcc "github.com/dplbsd/mcclib"
+    "bytes"
+    "fmt"
+    mcc "github.com/dpl0/mcclib"
 )
 
 // Symbols used in base64.
@@ -28,16 +28,16 @@ const test = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69
 const result = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
 
 func main() {
-	fmt.Printf("Test string: %q len(test): %d\n", test, len(test))
-	fmt.Printf("Correct result: %q len(result): %d\n", result, len(result))
+    fmt.Printf("Test string: %q len(test): %d\n", test, len(test))
+    fmt.Printf("Correct result: %q len(result): %d\n", result, len(result))
 
-	base64 := mcc.Hex2base64(mcc.String2Hex(test))
-	fmt.Printf("Our result: %s\n", base64)
+    base64 := mcc.Hex2base64(mcc.String2Hex(test))
+    fmt.Printf("Our result: %s\n", base64)
 
-	if cmp := bytes.Compare([]byte(result), base64); cmp != 0 {
-		fmt.Println("Your code is wrong!")
-	} else {
-		fmt.Println("Your code is correct! :)")
-	}
-	return
+    if cmp := bytes.Compare([]byte(result), base64); cmp != 0 {
+        fmt.Println("Your code is wrong!")
+    } else {
+        fmt.Println("Your code is correct! :)")
+    }
+    return
 }

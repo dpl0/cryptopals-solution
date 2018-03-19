@@ -20,24 +20,24 @@
 package main
 
 import (
-	"fmt"
-	mcc "github.com/dplbsd/mcclib"
+    "fmt"
+    mcc "github.com/dpl0/mcclib"
 )
 
 const crypt = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
 
 func main() {
-	hexCrypt := mcc.String2Hex(crypt)
-	// Key has to be of type []byte, even if just one byte.
-	key := []byte{0}
+    hexCrypt := mcc.String2Hex(crypt)
+    // Key has to be of type []byte, even if just one byte.
+    key := []byte{0}
 
-	for i := 0; i <= 255; i++ {
-		key[0] = byte(i)
-		decrypted := mcc.KeyXOR(key, []byte(hexCrypt))
-		freq := mcc.SymbolFrequency(decrypted)
-		if mcc.IsDistSimilarTo(freq, mcc.EnglishDist, 0.1, 16) {
+    for i := 0; i <= 255; i++ {
+        key[0] = byte(i)
+        decrypted := mcc.KeyXOR(key, []byte(hexCrypt))
+        freq := mcc.SymbolFrequency(decrypted)
+        if mcc.IsDistSimilarTo(freq, mcc.EnglishDist, 0.1, 16) {
             fmt.Printf("Key: %s\nCryptogram: %s\n", key, decrypted)
-		}
-	}
-	return
+        }
+    }
+    return
 }
