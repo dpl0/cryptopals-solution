@@ -12,25 +12,31 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
-	mcc "github.com/dplbsd/mcclib"
-	"os"
+    "bufio"
+    "fmt"
+    "os"
+    mcc "github.com/dpl0/mcclib"
 )
 
-// We have to cat the stuff to the program instead of just executing it.
-// $ cat set1/4.txt | go run set1/4.go # This should be enough.
+var filename string = "4.txt"
+
 func main() {
-	scanner := bufio.NewScanner(os.Stdin)
-	for scanner.Scan() {
-		if res := mcc.DecryptXOR1ByteKey(scanner.Text()); len(res) > 0 {
-			fmt.Println("Found results:")
-			for _, val := range res {
-				fmt.Printf("\t%v", val)
-			}
-		}
-	}
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "reading standard input:", err)
-	}
+    file, err := os.Open(filename)
+    if err != nil {
+        fmt.Println("Couldn't open file: './4.txt'")
+        os.Exit(1)
+    }
+
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+        if res := mcc.DecryptXOR1ByteKey(scanner.Text()); len(res) > 0 {
+            fmt.Println("Found results:")
+            for _, val := range res {
+                fmt.Printf("\t%v", val)
+            }
+        }
+    }
+    if err := scanner.Err(); err != nil {
+        fmt.Fprintln(os.Stderr, "reading standard input:", err)
+    }
 }
