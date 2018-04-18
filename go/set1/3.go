@@ -37,7 +37,10 @@ func main() {
         freq := mcc.SymbolFrequency(decrypted)
         if mcc.IsDistSimilarTo(freq, mcc.EnglishDist, 0.1, 16) {
             fmt.Printf("Key: %s\nCryptogram: %s\n", key, decrypted)
+            fmt.Println(mcc.CorrectResult)
+            return
         }
     }
+    fmt.Println(mcc.WrongResult)
     return
 }

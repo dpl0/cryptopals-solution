@@ -39,9 +39,9 @@ func main() {
     fmt.Printf("\nOur result: %q (%q)\n", stringXOR, xor)
 
     if cmp := bytes.Compare(xor, mcc.String2Hex(result)); cmp != 0 {
-        fmt.Printf("Your code is wrong!\n")
+        fmt.Println(mcc.WrongResult)
     } else {
-        fmt.Printf("Your code is correct! :)\n")
+        fmt.Println(mcc.CorrectResult)
     }
     return
 }

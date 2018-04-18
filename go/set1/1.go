@@ -35,9 +35,9 @@ func main() {
     fmt.Printf("Our result: %s\n", base64)
 
     if cmp := bytes.Compare([]byte(result), base64); cmp != 0 {
-        fmt.Println("Your code is wrong!")
+        fmt.Println(mcc.WrongResult)
     } else {
-        fmt.Println("Your code is correct! :)")
+        fmt.Println(mcc.CorrectResult)
     }
     return
 }

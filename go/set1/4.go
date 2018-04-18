@@ -32,10 +32,11 @@ func main() {
         if res := mcc.DecryptXOR1ByteKey(scanner.Text()); len(res) > 0 {
             fmt.Println("Found results:")
             for _, val := range res {
-                fmt.Printf("\t%v", val)
+                mcc.PrintCorrectly("\t"+val)
             }
         }
     }
+
     if err := scanner.Err(); err != nil {
         fmt.Fprintln(os.Stderr, "reading standard input:", err)
     }
