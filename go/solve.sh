@@ -24,7 +24,7 @@ install() {
 
 
 echo "Updating library... "
-install()
+install
 echo "Done updating library"
 
 # Unless there's a direct path as first arg, solve everything

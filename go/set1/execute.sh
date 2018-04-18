@@ -11,7 +11,7 @@ then
     done
 else
     # Execute all files
-    for i in *
+    for i in *.go
     do
         echo "Executing $i"
         go run $i
