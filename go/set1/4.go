@@ -29,7 +29,7 @@ func main() {
 
     scanner := bufio.NewScanner(file)
     for scanner.Scan() {
-        if res := mcc.DecryptXOR1ByteKey(scanner.Text()); len(res) > 0 {
+        if res := mcc.DecryptXor1ByteKey(scanner.Text()); len(res) > 0 {
             fmt.Println("Found results:")
             for _, val := range res {
                 mcc.PrintCorrectly("\t"+val)

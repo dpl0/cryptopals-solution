@@ -34,7 +34,11 @@ func main() {
     fmt.Printf("Second byte stream: %q (%q)\n", second, stringSecond)
     fmt.Printf("Correct result: %q (%q)\n", result, stringResult)
 
-    xor := mcc.ArrayXOR(mcc.String2Hex(first), mcc.String2Hex(second))
+    xor, err := mcc.ArrayXor(mcc.String2Hex(first), mcc.String2Hex(second))
+    if (err != nil) {
+        mcc.HandleError(err)
+    }
+
     stringXOR := mcc.Hex2String(xor)
     fmt.Printf("\nOur result: %q (%q)\n", stringXOR, xor)
 

@@ -1,20 +1,22 @@
 package mcclib
 
+import "errors"
+
 // Returns the XOR of two arrays of same length.
-func ArrayXOR(f []byte, s []byte) []byte {
+func ArrayXor(f []byte, s []byte) ([]byte, error) {
     l := len(f)
     if l != len(s) {
-        return nil
+        return nil, errors.New("Different sizes!")
     }
     ret := make([]byte, l, l)
     for i := range ret {
         ret[i] = f[i] ^ s[i]
     }
-    return ret
+    return ret, nil
 }
 
 // Applies the XOR cipher to s.
-func KeyXOR(k []byte, s []byte) []byte {
+func KeyXor(k []byte, s []byte) []byte {
     l := len(s)
     lk := len(k)
     ret := make([]byte, l, l)
