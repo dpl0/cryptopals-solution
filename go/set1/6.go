@@ -53,3 +53,14 @@
  * particular: the "wokka wokka!!!" edit distance really is 37.
  *
  */
+
+ package main
+
+ import (
+     // "fmt"
+     // mcc "github.com/dpl0/mcclib"
+ )
+
+func main() {
+    return
+}
