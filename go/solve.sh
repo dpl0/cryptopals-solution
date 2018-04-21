@@ -22,9 +22,7 @@ install() {
     go install ${PREFIX}/mcclib
 }
 
-
-if [ $1 = "-i" ]
-then
+handleInstall() {
     echo "Updating library... "
     install
     if [ $? -gt 0 ]
@@ -34,36 +32,38 @@ then
         exit
     fi
     echo "Done updating library"
-    exit
-fi
+}
 
-echo "Updating library... "
-install
-if [ $? -gt 0 ]
-then 
+
+main() {
+    if [ $1 -a $1 = "-i" ]
+    then
+        handleInstall
+        exit
+    fi
+
+    handleInstall
     echo
-    echo "Error reinstalling the library!"
-    exit
-fi
-echo "Done updating library"
-echo
 
-# Unless there's a direct path as first arg, solve everything
-if [ $# -gt 0 ]
-then
-    while [ $# -gt 0 ]
-    do
-        cd `dirname $1`
-        ./execute.sh `basename $1`
-        cd -
-        shift
-    done
-else
-    for dir in 'set*/' #Gobbling parameter that takes all directories
-    do
-        echo "Executing all in $dir"
-        cd $dir
-        ./execute.sh
-        cd -
-    done
-fi
+    # Unless there's a direct path as first arg, solve everything
+    if [ $# -gt 0 ]
+    then
+        while [ $# -gt 0 ]
+        do
+            cd `dirname $1`
+            ./execute.sh `basename $1`
+            cd -
+            shift
+        done
+    else
+        for dir in 'set*/' #Gobbling parameter that takes all directories
+        do
+            echo "Executing all in $dir"
+            cd $dir
+            ./execute.sh
+            cd -
+        done
+    fi
+}
+
+main $@
