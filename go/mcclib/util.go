@@ -6,6 +6,7 @@ import (
 )
 
 
+// Compare bytes with these function? Worth it?
 func TestEqual(f []byte, s []byte) bool {
     // TODO
     return false

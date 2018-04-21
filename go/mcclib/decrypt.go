@@ -10,6 +10,7 @@ func DecryptXor1ByteKey(stream string) (ret []string) {
         key[0] = byte(i)
         decrypted := KeyXor(key, []byte(hexCrypt))
         freq := SymbolFrequency(decrypted)
+        // TODO - Pass the policy by reference using the parameter
         if IsDistSimilarTo(freq, EnglishDist, 0.1, 16) {
             ret = append(ret, string(decrypted))
         }
