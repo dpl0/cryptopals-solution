@@ -31,7 +31,7 @@ func main() {
     fmt.Printf("Test string: %q len(test): %d\n", test, len(test))
     fmt.Printf("Correct result: %q len(result): %d\n", result, len(result))
 
-    base64 := mcc.Hex2base64(mcc.String2Hex(test))
+    base64 := mcc.Hex2Base64(mcc.String2Hex(test))
     fmt.Printf("Our result: %s\n", base64)
 
     if cmp := bytes.Compare([]byte(result), base64); cmp != 0 {

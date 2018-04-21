@@ -10,7 +10,7 @@ import (
 // This file implements all the formatting functions
 
 // Hexadecimal to base 64.
-func Hex2base64(hex []byte) []byte {
+func Hex2Base64(hex []byte) []byte {
     // Creates a base64 block (4 symbols) from 3 bytes.
     hexblock2base64 := func(hex []byte) (ret []byte) {
         var s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
