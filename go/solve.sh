@@ -23,9 +23,30 @@ install() {
 }
 
 
+if [ $1 = "-i" ]
+then
+    echo "Updating library... "
+    install
+    if [ $? -gt 0 ]
+    then
+        echo
+        echo "Error reinstalling the library!"
+        exit
+    fi
+    echo "Done updating library"
+    exit
+fi
+
 echo "Updating library... "
 install
+if [ $? -gt 0 ]
+then 
+    echo
+    echo "Error reinstalling the library!"
+    exit
+fi
 echo "Done updating library"
+echo
 
 # Unless there's a direct path as first arg, solve everything
 if [ $# -gt 0 ]
