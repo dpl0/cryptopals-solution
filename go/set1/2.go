@@ -43,9 +43,9 @@ func main() {
     fmt.Printf("\nOur result: %q (%q)\n", stringXOR, xor)
 
     if cmp := bytes.Compare(xor, mcc.String2Hex(result)); cmp != 0 {
-        fmt.Println(mcc.WrongResult)
+        mcc.CorrectResult()
     } else {
-        fmt.Println(mcc.CorrectResult)
+        mcc.WrongResult()
     }
     return
 }

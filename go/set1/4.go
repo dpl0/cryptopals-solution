@@ -19,6 +19,7 @@ import (
 )
 
 var filename string = "4.txt"
+var found bool
 
 func main() {
     file, err := os.Open(filename)
@@ -30,12 +31,15 @@ func main() {
     scanner := bufio.NewScanner(file)
     for scanner.Scan() {
         if res := mcc.DecryptXor1ByteKey(scanner.Text()); len(res) > 0 {
+            found = true
             fmt.Println("Found results:")
-            for _, val := range res {
-                mcc.PrintCorrectly("\t"+val)
+            for i, val := range res {
+                fmt.Println(fmt.Sprintf("%d:\t%s", i, val))
             }
         }
     }
+
+    if (found) { mcc.CorrectResult() } else { mcc.WrongResult() }
 
     if err := scanner.Err(); err != nil {
         fmt.Fprintln(os.Stderr, "reading standard input:", err)

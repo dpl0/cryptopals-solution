@@ -39,6 +39,6 @@ import (
                     "2b2027630c692b20283165286326302e27282f"
 
  func main() {
-     fmt.Println("\x1b[6;30;42m" + "Success!" + "\x1b[0m")
+     mcc.WrongResult()
      return
  }
