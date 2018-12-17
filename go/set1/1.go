@@ -17,7 +17,6 @@
 package main
 
 import (
-    "bytes"
     "fmt"
     mcc "github.com/dpl0/mcclib"
 )
@@ -34,7 +33,7 @@ func main() {
     base64 := mcc.Hex2Base64(mcc.String2Hex(test))
     fmt.Printf("Our result: %s\n", base64)
 
-    if cmp := bytes.Compare([]byte(result), base64); cmp != 0 {
+    if mcc.AreEqualByteArrays(base64, []byte(result)) {
         mcc.CorrectResult()
     } else {
         mcc.WrongResult()

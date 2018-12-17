@@ -17,7 +17,6 @@
 package main
 
 import (
-    "bytes"
     "fmt"
     mcc "github.com/dpl0/mcclib"
 )
@@ -42,7 +41,7 @@ func main() {
     stringXOR := mcc.Hex2String(xor)
     fmt.Printf("\nOur result: %q (%q)\n", stringXOR, xor)
 
-    if cmp := bytes.Compare(xor, mcc.String2Hex(result)); cmp != 0 {
+    if mcc.AreEqualByteArrays(xor, hexResult) {
         mcc.CorrectResult()
     } else {
         mcc.WrongResult()

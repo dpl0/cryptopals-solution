@@ -5,11 +5,18 @@ import (
     "os"
 )
 
+// Compare bytes to not depend on the bytes lib
+func AreEqualByteArrays(f []byte, s []byte) bool {
+    if (len(f) != len(s)) {
+        return false
+    }
 
-// Compare bytes with these function? Worth it?
-func TestEqual(f []byte, s []byte) bool {
-    // TODO
-    return false
+    for i, _ := range f {
+        if (f[i] != s[i]) {
+            return false
+        }
+    }
+    return true
 }
 
 func CorrectResult() {
