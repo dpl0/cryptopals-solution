@@ -23,7 +23,8 @@ func DecryptXor1ByteKey(stream string) (ret []string) {
 // TODO Also pass the policy for isDistSimilarTo by parameter, it makes for
 //      good design
 func DecryptXor(stream string, chars int) (ret []string) {
-    hexCrypt :=  String2Hex(stream)
+    hexCrypt := String2Hex(stream)
+
     // Key has to be of type []byte, even if just one byte.
     key := []byte{0}
 

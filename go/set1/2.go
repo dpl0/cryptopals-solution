@@ -26,19 +26,12 @@ const second = "686974207468652062756c6c277320657965"
 const result = "746865206b696420646f6e277420706c6179"
 
 func main() {
-    stringFirst := mcc.String2Hex(first)
-    stringSecond := mcc.String2Hex(second)
-    stringResult := mcc.String2Hex(result)
-    fmt.Printf("First byte stream: %q (%q)\n", first, stringFirst)
-    fmt.Printf("Second byte stream: %q (%q)\n", second, stringSecond)
-    fmt.Printf("Correct result: %q (%q)\n", result, stringResult)
+    hexFirst := mcc.String2Hex(first)
+    hexSecond := mcc.String2Hex(second)
+    hexResult := mcc.String2Hex(result)
 
-    xor, err := mcc.ArrayXor(mcc.String2Hex(first), mcc.String2Hex(second))
-    if (err != nil) {
-        mcc.HandleError(err)
-    }
+    xor, _ := mcc.ArrayXor(hexFirst, hexSecond)
 
-    stringXOR := mcc.Hex2String(xor)
     fmt.Printf("\nOur result: %q (%q)\n", stringXOR, xor)
 
     if mcc.AreEqualByteArrays(xor, hexResult) {
