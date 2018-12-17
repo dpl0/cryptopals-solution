@@ -21,7 +21,7 @@ var EnglishDist = LetterDist{
     'y': 0.0145984, 'z': 0.0007836, ' ': 0.1918182,
 }
 
-// Returns the frequency of given symbol in s (will work for non-letters too).
+// Returns the frequency of given byte in s
 func SymbolFrequency(s []byte) (ret LetterDist) {
     ret = make(LetterDist)
     var count float64 = 0
@@ -62,15 +62,18 @@ func IsDistSimilarTo(f LetterDist, s LetterDist, maxDiff float64, eqSymbols int)
             }
         }
     }
+
     // We also have to ensure that at least a minimum of symbols are the same.
     // Otherwise we'd get false positives.
     if len(matchingSymbols) < eqSymbols {
         return false
     }
+
     for _, val := range matchingSymbols {
         if val > maxDiff {
             return false
         }
     }
+
     return true
 }
