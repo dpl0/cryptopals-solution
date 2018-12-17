@@ -54,13 +54,13 @@
  *
  */
 
- package main
+package main
 
- import (
-     // "fmt"
-     // mcc "github.com/dpl0/mcclib"
- )
+import (
+// "fmt"
+// mcc "github.com/dpl0/mcclib"
+)
 
 func main() {
-    return
+	return
 }

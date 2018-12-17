@@ -1,8 +1,10 @@
 package mcclib
 
 // Decrypt XOR'ed text with only one character as key.
+// TODO We don't have to return an array of strings!
 func DecryptXor1ByteKey(stream string) (ret []string) {
     hexCrypt :=  String2Hex(stream)
+
     // Key has to be of type []byte, even if just one byte.
     key := []byte{0}
 
