@@ -61,6 +61,18 @@ import (
 // mcc "github.com/dpl0/mcclib"
 )
 
+func checkHammingDistance() {
+	s := "this is a test"
+	t := "wokka wokka!!!"
+	if mcc.HammingDistance(s, t) != 37 {
+		fmt.Fprintln(os.Stderr, "\nHamming distance incorrect!")
+		os.Exit(1)
+	} else {
+		fmt.Println("Whoah, you got it! Keep it up!")
+	}
+}
+
 func main() {
+	checkHammingDistance()
 	return
 }

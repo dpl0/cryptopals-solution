@@ -77,3 +77,24 @@ func IsDistSimilarTo(f LetterDist, s LetterDist, maxDiff float64, eqSymbols int)
 
     return true
 }
+
+func HammingDistance(s string, t string) (ret int) {
+    var masks []byte = []byte{0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80}
+
+    if len(s) != len(t) {
+        return -1
+    }
+
+    for  i := 0; i < len(s);  i++ {
+        if s[i] != t[i] {
+            // Check every bit
+            for _, mask := range(masks) {
+                if ((s[i] & mask) != (t[i] & mask)) {
+                    ret++
+                }
+            }
+        }
+    }
+
+    return
+}
