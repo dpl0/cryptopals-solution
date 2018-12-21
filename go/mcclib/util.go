@@ -24,7 +24,7 @@ func CorrectResult() {
 }
 
 func WrongResult() {
-    fmt.Printf("\x1b[6;30;42m" + "Your code is wrong! :(" + "\x1b[0m" + "\n")
+    fmt.Printf("\x1b[6;30;41m" + "Your code is wrong! :(" + "\x1b[0m" + "\n")
 }
 
 func HandleError(err error) {
