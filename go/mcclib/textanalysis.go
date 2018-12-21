@@ -6,10 +6,17 @@ import (
 
 type LetterDist map[byte]float64
 
+type DistSimilarity struct {
+    maxDiff float64
+    eqSymbols int
+}
+
+var DefaultSimilarity = DistSimilarity{ 0.1, 16 }
+
 // Distribution of letters in English, from:
 // http://www.data-compression.com/english.html
 // No punctuation letters.
-var EnglishDist = LetterDist{
+var EnglishDist = LetterDist {
     'a': 0.0651738, 'b': 0.0124248, 'c': 0.0217339,
     'd': 0.0349835, 'e': 0.1041442, 'f': 0.0197881,
     'g': 0.0158610, 'h': 0.0492888, 'i': 0.0558094,
@@ -45,13 +52,14 @@ func SymbolFrequency(s []byte) (ret LetterDist) {
 // Compares a given distribution with another.
 // Returns true if there's a match within +-maxDiff, and the result shares at
 // least eqSymbols symbols.
-func IsDistSimilarTo(f LetterDist, s LetterDist, maxDiff float64, eqSymbols int) bool {
+func IsDistSimilarTo(f LetterDist, s LetterDist, sim DistSimilarity) bool {
     var matchingSymbols LetterDist = make(LetterDist)
     for k, _ := range f {
         if _, ok := s[k]; ok {
             matchingSymbols[k] = math.Abs(f[k] - s[k])
         }
     }
+
     // We now have to search the other way. This could be much easier with the
     // python-like set ^ operation.
     for k, _ := range s {
@@ -65,12 +73,12 @@ func IsDistSimilarTo(f LetterDist, s LetterDist, maxDiff float64, eqSymbols int)
 
     // We also have to ensure that at least a minimum of symbols are the same.
     // Otherwise we'd get false positives.
-    if len(matchingSymbols) < eqSymbols {
+    if len(matchingSymbols) < sim.eqSymbols {
         return false
     }
 
     for _, val := range matchingSymbols {
-        if val > maxDiff {
+        if val > sim.maxDiff {
             return false
         }
     }
