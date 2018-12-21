@@ -19,6 +19,10 @@ func AreEqualByteArrays(f []byte, s []byte) bool {
     return true
 }
 
+func AreEqualStrings(f string, s string) bool {
+    return AreEqualByteArrays([]byte(f), []byte(s))
+}
+
 func CorrectResult() {
     fmt.Printf("\x1b[6;30;42m" + "Your code is correct! :)" + "\x1b[0m" + "\n")
 }
