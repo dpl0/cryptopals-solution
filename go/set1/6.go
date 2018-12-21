@@ -57,9 +57,13 @@
 package main
 
 import (
-// "fmt"
-// mcc "github.com/dpl0/mcclib"
+    "bufio"
+	"fmt"
+	mcc "github.com/dpl0/mcclib"
+	"os"
 )
+
+const filename = "./6.txt"
 
 func checkHammingDistance() {
 	s := "this is a test"
@@ -73,6 +77,25 @@ func checkHammingDistance() {
 }
 
 func main() {
+    var fileText string
 	checkHammingDistance()
+
+	file, err := os.Open(filename)
+	if err != nil {
+		fmt.Println("Couldn't open file: "+filename)
+		os.Exit(1)
+	}
+
+	scanner := bufio.NewScanner(file)
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "reading standard input:", err)
+	}
+
+	for scanner.Scan() {
+        fileText += scanner.Text()
+	}
+    fmt.Printf("Filetext: \n%s", fileText)
+    // TODO - Implement Base64 decoding! (we only have encoding)
+
 	return
 }
