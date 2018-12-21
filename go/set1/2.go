@@ -30,7 +30,7 @@ func main() {
 	hexSecond := mcc.String2Hex(second)
 	hexResult := mcc.String2Hex(result)
 
-	xor, _ := mcc.ArrayXor(hexFirst, hexSecond)
+	xor := mcc.ArrayXor(hexFirst, hexSecond)
 
 	stringXOR, _ := mcc.Mcchex2String(xor)
 	fmt.Printf("\nOur result: %s (%q)\n", stringXOR, xor)
