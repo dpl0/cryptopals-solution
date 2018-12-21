@@ -37,7 +37,7 @@ func main() {
 		key[0] = byte(i)
 		decrypted := mcc.ArrayXor(key, []byte(hexCrypt))
 		freq := mcc.SymbolFrequency(decrypted)
-		if mcc.IsDistSimilarTo(freq, mcc.EnglishDist, 0.1, 16) {
+		if mcc.IsDistSimilarTo(freq, mcc.EnglishDist, mcc.DefaultSimilarity) {
 			fmt.Printf("Key: %s\nCryptogram: %s\n", key, decrypted)
 			mcc.CorrectResult()
 			return
