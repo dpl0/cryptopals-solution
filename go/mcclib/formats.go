@@ -65,6 +65,9 @@ func Bytes2Base64(hex []byte) (base64 []byte) {
     return base64
 }
 
+// TODO - Implement this :)
+func Base642Bytes(base64 string) (data []byte) {
+}
 
 
 // Convert a binary array to its string representation.
