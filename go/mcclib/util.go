@@ -31,6 +31,14 @@ func WrongResult() {
     fmt.Printf("\x1b[6;30;41m" + "Your code is wrong! :(" + "\x1b[0m" + "\n")
 }
 
+func PrintCorrectly(s string) {
+    fmt.Printf("\x1b[6;30;42m" + s + "\x1b[0m" + "\n")
+}
+
+func PrintWrongly(s string) {
+    fmt.Printf("\x1b[6;30;41m" + s + "\x1b[0m" + "\n")
+}
+
 func HandleError(err error) {
     fmt.Fprintf(os.Stderr, "\nmcclib error: %s\n", err)
     os.Exit(1)

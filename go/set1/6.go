@@ -57,7 +57,7 @@
 package main
 
 import (
-    "bufio"
+	"bufio"
 	"fmt"
 	mcc "github.com/dpl0/mcclib"
 	"os"
@@ -69,20 +69,38 @@ func checkHammingDistance() {
 	s := "this is a test"
 	t := "wokka wokka!!!"
 	if mcc.HammingDistance(s, t) != 37 {
-		fmt.Fprintln(os.Stderr, "\nHamming distance incorrect!")
+		mcc.PrintWrongly("Hamming distance")
 		os.Exit(1)
 	} else {
-		fmt.Println("Whoah, you got it! Keep it up!")
+		mcc.PrintCorrectly("Hamming distance")
 	}
 }
 
+func checkBase64Decoding() {
+	testBase64Decoding := func(base64 string, str string) {
+		decoded := string(mcc.Base642Bytes(base64))
+		if !mcc.AreEqualStrings(decoded, str) {
+			os.Exit(1)
+		}
+	}
+
+	// Taken as exemples
+	testBase64Decoding("aGkgdGhlcmUh", "hi there!")
+	mcc.PrintCorrectly("Base64 decoding 1/3")
+	testBase64Decoding("aGkgdGhlcmU=", "hi there")
+	mcc.PrintCorrectly("Base64 decoding 2/3")
+	testBase64Decoding("aGkgdGhlcg==", "hi ther")
+	mcc.PrintCorrectly("Base64 decoding 3/3")
+}
+
 func main() {
-    var fileText string
+	var fileText string
 	checkHammingDistance()
+	checkBase64Decoding()
 
 	file, err := os.Open(filename)
 	if err != nil {
-		fmt.Println("Couldn't open file: "+filename)
+		fmt.Println("Couldn't open file: " + filename)
 		os.Exit(1)
 	}
 
@@ -92,10 +110,10 @@ func main() {
 	}
 
 	for scanner.Scan() {
-        fileText += scanner.Text()
+		fileText += scanner.Text()
 	}
-    fmt.Printf("Filetext: \n%s", fileText)
-    // TODO - Implement Base64 decoding! (we only have encoding)
+
+	fileTextDecoded := mcc.Base642Bytes(fileText)
 
 	return
 }

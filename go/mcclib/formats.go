@@ -31,17 +31,25 @@ var hexSymbols = []string {
     "f0", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "fa", "fb",
     "fc", "fd", "fe", "ff" }
 
+// Octet corresponds to byte characters, sextets to base64 symbols
+// +--first octet--+-second octet--+--third octet--+
+// |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
+// +-----------+---+-------+-------+---+-----------+
+// |5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|
+// +--1.index--+--2.index--+--3.index--+--4.index--+
+
+var base64Symbols string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                           "abcdefghijklmnopqrstuvwxyz0123456789+/"
+const base64Pad = '='
+
 // Bytes to base 64.
 func Bytes2Base64(hex []byte) (base64 []byte) {
     // Creates a base64 block (4 symbols) from 3 bytes.
-    hexblock2base64 := func(hex []byte) (ret []byte) {
-        var s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-        one := hex[0] & 0xfc >> 2
-        two := hex[0]&0x03<<4 | hex[1]&0xf0>>4
-        three := hex[1]&0x0f<<2 | hex[2]&0xc0>>6
-        four := hex[2] & 0x3f
-
-        ret = append(ret, s[one], s[two], s[three], s[four])
+    hexBlock2Base64 := func(hex []byte) (ret []byte) {
+        ret = append(ret, base64Symbols[hex[0] & 0xfc >> 2])
+        ret = append(ret, base64Symbols[hex[0] & 0x03<<4 | hex[1] & 0xf0 >> 4])
+        ret = append(ret, base64Symbols[hex[1] & 0x0f<<2 | hex[2] & 0xc0 >> 6])
+        ret = append(ret, base64Symbols[hex[2] & 0x3f])
         return
     }
 
@@ -52,21 +60,56 @@ func Bytes2Base64(hex []byte) (base64 []byte) {
 
     // Perform transformation.
     for i := 0; i < len(hex); i += 3 {
-        base64 = append(base64, hexblock2base64(hex[i:i+3])...)
+        base64 = append(base64, hexBlock2Base64(hex[i:i+3])...)
     }
 
-    // Modify padding if needed.
+    // Modify last byte if needed, to set padding
     l := len(base64)
     for i := l - 3; i < l; i++ {
         if base64[i] == 'A' {
-            base64[i] = '='
+            base64[i] = base64Pad
         }
     }
     return base64
 }
 
-// TODO - Implement this :)
 func Base642Bytes(base64 string) (data []byte) {
+    base64Block2Bytes := func(hex string) (ret [3]byte) {
+        symbolIndexes := func(hex string) ([4]byte) {
+            first  := byte(strings.Index(base64Symbols, string(hex[0])))
+            second := byte(strings.Index(base64Symbols, string(hex[1])))
+            third  := byte(strings.Index(base64Symbols, string(hex[2])))
+            fourth := byte(strings.Index(base64Symbols, string(hex[3])))
+            return [4]byte{first, second, third, fourth}
+        }
+
+        indexes := symbolIndexes(hex)
+
+        // |7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|7 6 5 4 3 2 1 0|
+        // |5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|5 4 3 2 1 0|
+        // Remember that we also have 2 bits for every index at the beginning
+        // since ints are 8 bits long
+        ret[0] = indexes[0] << 2 | ((indexes[1] & 0x30) >> 4)
+        ret[1] = ((indexes[1] & 0x0f) << 4) | ((indexes[2] & 0x3c) >> 2 )
+        ret[2] = indexes[2] << 6 | (indexes[3] & 0x3f)
+        return
+    }
+
+    // 4 base64 symbols (6 bits each) = 3 bytes
+    for i := 0; i < len(base64); i += 4 {
+        block := base64[i:i+4]
+        translated := base64Block2Bytes(block)
+
+        if base64[i+2] == base64Pad {
+            data = append(data, translated[0])
+        } else if base64[i+3] == base64Pad {
+            data = append(data, translated[0], translated[1])
+        } else {
+            data = append(data, translated[0], translated[1], translated[2])
+        }
+    }
+
+    return data
 }
 
 
