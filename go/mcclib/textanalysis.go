@@ -86,7 +86,7 @@ func IsDistSimilarTo(f LetterDist, s LetterDist, sim DistSimilarity) bool {
     return true
 }
 
-func HammingDistance(s string, t string) (ret int) {
+func HammingDistance(s []byte, t []byte) (ret int) {
     var masks []byte = []byte{0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80}
 
     if len(s) != len(t) {
