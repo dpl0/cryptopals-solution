@@ -1,43 +1,61 @@
 package mcclib
 
-// Decrypt XOR'ed text with only one character as key.
-// TODO We don't have to return an array of strings!
-func DecryptXor1ByteKey(stream string) (ret []string) {
-    hexCrypt :=  String2Bytes(stream)
+import (
+    "fmt"
+    "math"
+)
 
-    // Key has to be of type []byte, even if just one byte.
-    key := []byte{0}
+type Decrypted struct {
+    Key []byte
+    Data []byte
+    Score float64
+}
 
-    for i := 0; i <= 255; i++ {
-        key[0] = byte(i)
-        decrypted := ArrayXor(key, []byte(hexCrypt))
-        freq := SymbolFrequency(decrypted)
-        // TODO - Pass the policy by reference using the parameter
-        if IsDistSimilarTo(freq, EnglishDist, DefaultSimilarity) {
-            ret = append(ret, string(decrypted))
-        }
-    }
-    return
+func (d Decrypted) String() string {
+    return fmt.Sprintf("Key: %v\nData: \"+%q\"\nScore: %v\n", d.Key, d.Data, d.Score)
 }
 
 
-// Decrypt XOR with key of any lengh
-// TODO Also pass the policy for isDistSimilarTo by parameter, it makes for
-//      good design
-func DecryptXor(stream string, chars int) (ret []string) {
-    hexCrypt := String2Bytes(stream)
-
-    // Key has to be of type []byte, even if just one byte.
-    key := []byte{0}
-
-    for i := 0; i <= 255; i++ {
-        key[0] = byte(i)
-        decrypted := ArrayXor(key, []byte(hexCrypt))
-        freq := SymbolFrequency(decrypted)
-        if IsDistSimilarTo(freq, EnglishDist, DefaultSimilarity) {
-            ret = append(ret, string(decrypted))
-        }
-    }
-    return
+// Given a set of ChiSquareResults, find the one with the best score
+func GetBestChiSquareDist(distributions map[byte]float64) (bestKey byte) {
+	var smaller = math.Inf(1)
+	for k, score := range distributions {
+		if score < smaller {
+			smaller = score
+			bestKey = k
+		}
+	}
+	return
 }
 
+func GetBestDecrypted(set []Decrypted) (ret Decrypted) {
+    smaller := math.Inf(1)
+	for _, decripted := range set {
+		if decripted.Score < smaller {
+			smaller = decripted.Score
+            ret = decripted
+		}
+	}
+	return
+}
+
+// By default, decrypt assuming english text
+func DecryptOneByteXor(hexCrypt []byte) Decrypted {
+	return DecryptOneByteXorDist(hexCrypt, EnglishDist)
+}
+
+// Decrypt XOR with one byte key
+func DecryptOneByteXorDist(hexCrypt []byte, dist LetterDist) Decrypted {
+	// Store all possible results of decripting with any key, and evaluate and
+	// return the best one.
+	decriptedSet := make([]Decrypted, 256)
+	for i := 0; i <= 255; i++ {
+		key := byte(i)
+		decrypted := ArrayXor([]byte{key}, hexCrypt)
+		score := ChiSquaredTestDist(string(decrypted), dist)
+        decriptedSet[i] = Decrypted{[]byte{key}, decrypted, score}
+	}
+    fmt.Println(decriptedSet)
+
+	return GetBestDecrypted(decriptedSet)
+}

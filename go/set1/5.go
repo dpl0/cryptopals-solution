@@ -27,6 +27,7 @@
 package main
 
 import (
+	"fmt"
 	mcc "github.com/dpl0/mcclib"
 )
 
@@ -38,11 +39,12 @@ const ciphertext = "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343" +
 	"2b2027630c692b20283165286326302e27282f"
 
 func main() {
-    key  := []byte(keyString)
-    text := []byte(textString)
-    encrypted := mcc.Bytes2String(mcc.ArrayXor(key, text))
+	key := []byte(keyString)
+	text := []byte(textString)
+	decrypted := mcc.Bytes2String(mcc.ArrayXor(key, text))
 
-	if mcc.AreEqualStrings(encrypted, ciphertext) {
+	fmt.Println(decrypted)
+	if decrypted == ciphertext {
 		mcc.CorrectResult()
 	} else {
 		mcc.WrongResult()

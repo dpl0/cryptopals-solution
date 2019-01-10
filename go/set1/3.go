@@ -26,23 +26,17 @@ import (
 
 const crypt = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a3" +
 	"93b3736"
+const value = "Cooking MC's like a pound of bacon"
 
 func main() {
+    fmt.Println("Executing exercice 3 in set 1")
 	hexCrypt := mcc.String2Bytes(crypt)
-
-	// Key has to be of type []byte, even if just one byte.
-	key := []byte{0}
-
-	for i := 0; i <= 255; i++ {
-		key[0] = byte(i)
-		decrypted := mcc.ArrayXor(key, []byte(hexCrypt))
-		freq := mcc.SymbolFrequency(decrypted)
-		if mcc.IsDistSimilarTo(freq, mcc.EnglishDist, mcc.DefaultSimilarity) {
-			fmt.Printf("Key: %s\nCryptogram: %s\n", key, decrypted)
-			mcc.CorrectResult()
-			return
-		}
+	result := mcc.DecryptOneByteXor(hexCrypt)
+    fmt.Println("Result: ",string(result.Data))
+	if value == string(result.Data) {
+		mcc.CorrectResult()
+	} else {
+		mcc.WrongResult()
 	}
-	mcc.WrongResult()
 	return
 }
