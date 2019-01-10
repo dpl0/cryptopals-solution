@@ -26,7 +26,7 @@ const second = "686974207468652062756c6c277320657965"
 const result = "746865206b696420646f6e277420706c6179"
 
 func main() {
-	hexFirst  := mcc.String2Bytes(first)
+	hexFirst := mcc.String2Bytes(first)
 	hexSecond := mcc.String2Bytes(second)
 	hexResult := mcc.String2Bytes(result)
 

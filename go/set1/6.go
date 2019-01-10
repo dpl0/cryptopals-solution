@@ -61,11 +61,92 @@ import (
 	"fmt"
 	mcc "github.com/dpl0/mcclib"
 	"os"
+	"reflect"
 )
 
 const filename = "./6.txt"
 
-func checkHammingDistance() {
+func BlockData(data []byte, size int) (ret [][]byte) {
+	for i := 0; i < len(data); i += size {
+		if i+size < len(data) {
+			ret = append(ret, data[i:i+size])
+		} else {
+			ret = append(ret, data[i:])
+		}
+	}
+	return
+}
+
+func TransposeData(data [][]byte) (ret [][]byte) {
+	x, y := len(data[0]), len(data)
+	ret = make([][]byte, x)
+	for i := 0; i < x; i++ {
+		ret[i] = make([]byte, y)
+	}
+
+	for i := 0; i < x; i++ {
+		for j := 0; j < y; j++ {
+			// Last block from data may have missing bytes!
+			if j < len(data)-1 {
+				ret[i][j] = data[j][i]
+			} else {
+				if i < len(data[j]) {
+					ret[i][j] = data[j][i]
+				}
+			}
+		}
+	}
+	return
+}
+
+func testBlocking() {
+	data := []byte{1, 2, 3, 4, 5, 6, 6, 7, 8, 9, 10}
+	result := [][]byte{[]byte{1, 2}, []byte{3, 4}, []byte{5, 6}, []byte{7, 8}, []byte{9, 10}}
+	var size = 2
+
+	if reflect.DeepEqual(result, BlockData(data, size)) {
+		mcc.PrintWrongly("Blocking")
+		os.Exit(1)
+	} else {
+		mcc.PrintCorrectly("Blocking")
+	}
+}
+
+func testTransposing() {
+	data := [][]byte{[]byte{1, 2}, []byte{3, 4}, []byte{5, 6}, []byte{7, 8}, []byte{9, 10}}
+	result := [][]byte{[]byte{1, 3, 5, 7, 9}, []byte{2, 4, 6, 8, 10}}
+
+	transposed := TransposeData(data)
+
+	if len(result) != len(transposed) {
+		mcc.PrintWrongly("Transposing")
+		os.Exit(1)
+	}
+	if cap(result) != cap(transposed) {
+		mcc.PrintWrongly("Transposing")
+		os.Exit(1)
+	}
+
+	for i := 0; i < len(result); i++ {
+		if len(result[i]) != len(transposed[i]) {
+			mcc.PrintWrongly("Transposing")
+			os.Exit(1)
+		}
+		if cap(result[i]) != cap(transposed[i]) {
+			mcc.PrintWrongly("Transposing")
+			os.Exit(1)
+		}
+		for j := 0; j < len(result[i]); j++ {
+			if result[i][j] != transposed[i][j] {
+				mcc.PrintWrongly("Transposing")
+				os.Exit(1)
+			}
+		}
+	}
+	mcc.PrintCorrectly("Transposing")
+}
+
+func testHammingDistance() {
 	s := []byte("this is a test")
 	t := []byte("wokka wokka!!!")
 	if mcc.HammingDistance(s, t) != 37 {
@@ -76,7 +157,7 @@ func checkHammingDistance() {
 	}
 }
 
-func checkBase64Decoding() {
+func testBase64Decoding() {
 	testBase64Decoding := func(base64 string, str string) {
 		decoded := string(mcc.Base642Bytes(base64))
 		if !mcc.AreEqualStrings(decoded, str) {
@@ -95,10 +176,12 @@ func checkBase64Decoding() {
 
 func main() {
 	var fileText string
-    fmt.Println("First of all, execute some tests")
-	checkHammingDistance()
-	checkBase64Decoding()
-    fmt.Println("Ok, starting with the exercise!")
+	fmt.Println("First of all, execute some tests")
+	testHammingDistance()
+	testBase64Decoding()
+	testBlocking()
+	testTransposing()
+	fmt.Println("Ok, starting with the exercise!")
 
 	file, err := os.Open(filename)
 	if err != nil {
@@ -117,92 +200,76 @@ func main() {
 
 	fileTextDecoded := mcc.Base642Bytes(fileText)
 
-    // Find best keysize
-    // TODO - Eventually, put this in some function
-    // 1. Let KEYSIZE be the guessed length of the key; try from 2 to 40
-    var probableKeySizes [3]int
-    {
-        minorThreeDistances := [3]float32{1000, 1000, 1000}
-        for keysize := 2; keysize <= 40; keysize++ {
-            // 3. Take the first and second KEYSIZE worth of bytes, and find
-            // the normalized (dividing by keysize) edit distance between them.
-            // 4. The KEYSIZE with the min edit dist is probably the key.  You
-            // could proceed perhaps with the smallest 2-3.  Or take 4 KEYSIZE
-            // blocks instead of 2 and average the distances.
-            firstBlock  := fileTextDecoded[:keysize]
-            secondBlock := fileTextDecoded[keysize:keysize*2]
-            thirdBlock  := fileTextDecoded[keysize*2:keysize*3]
-            fourthBlock := fileTextDecoded[keysize*3:keysize*4]
-            editDistance1 := float32(mcc.HammingDistance(firstBlock, secondBlock))/float32(keysize)
-            editDistance2 := float32(mcc.HammingDistance(secondBlock, thirdBlock))/float32(keysize)
-            editDistance3 := float32(mcc.HammingDistance(thirdBlock, fourthBlock))/float32(keysize)
-            editDistance := (editDistance1 + editDistance2 + editDistance3)/3
+	// Find best keysize
+	// TODO - Eventually, put this in some function
+	// 1. Let KEYSIZE be the guessed length of the key; try from 2 to 40
+	var probableKeySizes [3]int
+	{
+		minorThreeDistances := [3]float32{1000, 1000, 1000}
+		for keysize := 2; keysize <= 40; keysize++ {
+			// 3. Take the first and second KEYSIZE worth of bytes, and find
+			// the normalized (dividing by keysize) edit distance between them.
+			// 4. The KEYSIZE with the min edit dist is probably the key.  You
+			// could proceed perhaps with the smallest 2-3.  Or take 4 KEYSIZE
+			// blocks instead of 2 and average the distances.
+			firstBlock := fileTextDecoded[:keysize]
+			secondBlock := fileTextDecoded[keysize : keysize*2]
+			thirdBlock := fileTextDecoded[keysize*2 : keysize*3]
+			fourthBlock := fileTextDecoded[keysize*3 : keysize*4]
+			editDistance1 := float32(mcc.HammingDistance(firstBlock, secondBlock)) / float32(keysize)
+			editDistance2 := float32(mcc.HammingDistance(secondBlock, thirdBlock)) / float32(keysize)
+			editDistance3 := float32(mcc.HammingDistance(thirdBlock, fourthBlock)) / float32(keysize)
+			editDistance := (editDistance1 + editDistance2 + editDistance3) / 3
 
-            // We could either use this, or a map with all the values and
-            // search later, but this is a little bit more complex, but much
-            // simpler to implement (Maybe I just don't wan't to use
-            // storage/heap :P)
-            if (editDistance < minorThreeDistances[0]) {
-                minorThreeDistances[0] = editDistance
-                probableKeySizes[0] = keysize
-            } else if (editDistance < minorThreeDistances[1]) {
-                minorThreeDistances[1] = editDistance
-                probableKeySizes[1] = keysize
-            } else if (editDistance < minorThreeDistances[2]) {
-                minorThreeDistances[2] = editDistance
-                probableKeySizes[2] = keysize
-            }
-        }
+			// We could either use this, or a map with all the values and
+			// search later, but this is a little bit more complex, but much
+			// simpler to implement (Maybe I just don't wan't to use
+			// storage/heap :P)
+			if editDistance < minorThreeDistances[0] {
+				minorThreeDistances[0] = editDistance
+				probableKeySizes[0] = keysize
+			} else if editDistance < minorThreeDistances[1] {
+				minorThreeDistances[1] = editDistance
+				probableKeySizes[1] = keysize
+			} else if editDistance < minorThreeDistances[2] {
+				minorThreeDistances[2] = editDistance
+				probableKeySizes[2] = keysize
+			}
+		}
 
-        fmt.Println("Probable key sizes: ", probableKeySizes)
-        fmt.Println("Minor three distances: ", minorThreeDistances)
-    }
+		fmt.Println("Probable key sizes: ", probableKeySizes)
+		fmt.Println("Minor three distances: ", minorThreeDistances)
+	}
 
-    {
-        // 5. Break the ciphertext into blocks of KEYSIZE length.
-        blocks := make(map[int][][]byte)
-        for _, keysize := range(probableKeySizes) {
-            // Put into blocks by keysize
-            for i := 0; i < len(fileTextDecoded); i += keysize {
-                if i+keysize < len(fileTextDecoded) {
-                     blocks[keysize] = append(blocks[keysize], fileTextDecoded[i:i+keysize])
-                } else {
-                     blocks[keysize] = append(blocks[keysize], fileTextDecoded[i:])
-                }
-            }
-        }
+	{
+		// 5. Break the ciphertext into blocks of KEYSIZE length.
+		blocks := make(map[int][][]byte)
+		for _, keysize := range probableKeySizes {
+			blocks[keysize] = BlockData(fileTextDecoded, keysize)
+		}
 
-        // 6. Transpose the blocks: make a block that is the 1st byte of
-        // every block, and a block that is the 2nd byte of every block...
-        transposedData := make(map[int][][]byte)
-        for keysize, blockedData := range(blocks) {
-            var transposed []byte
-            for _, block := range(blockedData) {
-                for j := 0; j < keysize; j++ {
-                    if (j < len(block)) {
-                        transposed = append(transposed, block[j])
-                    }
-                }
-            }
-            fmt.Printf("BEFORE APPEND transposedData[%d]: %s\n\n", keysize, transposedData[keysize])
-            transposedData[keysize] = append(transposedData[keysize], transposed)
-            fmt.Printf("AFTER APPEND transposedData[%d]: %s\n\n", keysize, transposedData[keysize])
-        }
+		// 6. Transpose the blocks: make a block that is the 1st byte of
+		// every block, and a block that is the 2nd byte of every block...
+		transposedData := make(map[int][][]byte)
+		// decryptedData := make(map[int][]mcc.DecryptResult)
+		for keysize, blocked := range blocks {
+			data := TransposeData(blocked)
+			transposedData[keysize] = data
+			fmt.Println("Attemting with transposed blocks of keysize: ", keysize)
+			// 7. Solve each block as if it was single-character XOR.
+			for _, block := range data {
+				results := mcc.DecryptOneByteXor(block)
+				for _, res := range results {
+					fmt.Printf("%s\n", res.Data)
+				}
+				os.Exit(1)
+			}
+		}
 
-        fmt.Println("Data length: ",  len(fileTextDecoded))
-        for keysize, trData := range(transposedData) {
-            fmt.Println("Keysize: ", keysize, "has ", len(trData), "blocks")
-        }
-
-        fmt.Println(transposedData[2])
-
-
-        // 7. Solve each block as if it was single-character XOR.
-
-        // 8. For each block, the single-byte XOR key that produces the best
-        // looking histogram is the repeating-key XOR key byte for that block.
-        // Put them together and you have the key.
-    }
+		// 8. For each block, the single-byte XOR key that produces the best
+		// looking histogram is the repeating-key XOR key byte for that block.
+		// Put them together and you have the key.
+	}
 
 	return
 }

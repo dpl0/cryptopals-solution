@@ -19,7 +19,6 @@ import (
 )
 
 var filename string = "4.txt"
-var found bool
 
 func main() {
 	file, err := os.Open(filename)
@@ -29,23 +28,28 @@ func main() {
 	}
 
 	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		if res := mcc.DecryptXor1ByteKey(scanner.Text()); len(res) > 0 {
-			found = true
-			fmt.Println("Found results:")
-			for i, val := range res {
-				fmt.Println(fmt.Sprintf("%d:\t%s", i, val))
-			}
-		}
-	}
-
-	if found {
-		mcc.CorrectResult()
-	} else {
-		mcc.WrongResult()
-	}
-
 	if err := scanner.Err(); err != nil {
 		fmt.Fprintln(os.Stderr, "reading standard input:", err)
 	}
+
+	var decrypted []mcc.DecryptResult
+	for scanner.Scan() {
+		data := mcc.String2Bytes(scanner.Text())
+		decrypted = append(decrypted, mcc.DecryptOneByteXor(data))
+	}
+
+	for _, d := range decrypted {
+		fmt.Println(d.ChiSquaredResult, "-", string(d.Data))
+		fmt.Println()
+	}
+
+	// Get best result
+	result := mcc.GetBestDecryptResult(decrypted)
+	fmt.Println(string(result.Data))
+
+	// if found {
+	// 	mcc.CorrectResult()
+	// } else {
+	// 	mcc.WrongResult()
+	// }
 }
