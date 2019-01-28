@@ -67,13 +67,13 @@ func GetLetterDist(s []byte) (ret LetterDist) {
 func ChiSquaredTestDist(s string, e LetterDist) (ret float64) {
 	var count LetterCount = GetSymbolCount([]byte(s))
 
-	for symbol, freqE := range e {
-		countE := freqE * float64(len(s))
-		if countC, ok := count[symbol]; ok {
+	for symbol, countC := range count {
+		if freqE, ok := e[symbol]; ok {
+			countE := freqE * float64(len(s))
 			contrib := math.Pow(float64(countC)-countE, 2) / countE
 			ret += contrib
 		} else {
-			ret += 100
+			ret += 50
 		}
 	}
 	return
