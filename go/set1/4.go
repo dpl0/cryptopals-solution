@@ -19,6 +19,7 @@ import (
 )
 
 var filename string = "4.txt"
+var result string = "Now that the party is jumping\n"
 
 func main() {
 	file, err := os.Open(filename)
@@ -35,21 +36,18 @@ func main() {
 	var decryptedSet []mcc.Decrypted
 	for scanner.Scan() {
 		data := mcc.String2Bytes(scanner.Text())
-		decryptedSet = append(decryptedSet, mcc.DecryptOneByteXor(data))
-	}
-
-	for _, d := range decryptedSet {
-		fmt.Println(d.Score)
-		fmt.Println()
+        decrypted := mcc.DecryptOneByteXor(data)
+		decryptedSet = append(decryptedSet, decrypted)
 	}
 
 	// Get best result
-	result := mcc.GetBestDecrypted(decryptedSet)
-	fmt.Println(string(result.Data))
+	best := mcc.GetBestDecrypted(decryptedSet)
+    fmt.Printf("Best solution is: %q\n", string(best.Data))
+    fmt.Println(best)
 
-	// if found {
-	// 	mcc.CorrectResult()
-	// } else {
-	// 	mcc.WrongResult()
-	// }
+	if string(best.Data) == result {
+		mcc.CorrectResult()
+	} else {
+		mcc.WrongResult()
+	}
 }
