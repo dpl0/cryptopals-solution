@@ -3,7 +3,6 @@ package mcclib
 import (
 	"math"
 	"strings"
-	// "fmt"
 )
 
 type LetterDist map[byte]float64
@@ -29,15 +28,12 @@ var EnglishDist = LetterDist{
 	'$': 2.74e-05, '#': 1.37e-05, '%': 1.37e-05,
 }
 
-// Returns the frequency of given byte in s
-func SymbolCount(s []byte) (ret LetterCount) {
+func GetSymbolCount(s []byte) (ret LetterCount) {
 	ret = make(LetterCount)
-	var count float64 = 0
 	// Calculate number of times a symbol appears.
 	str := strings.ToLower(string(s))
 	for _, val := range str {
 		bval := byte(val)
-		count++
 		// Initialize if needed.
 		if _, ok := ret[bval]; ok != true {
 			ret[bval] = 0
@@ -49,7 +45,7 @@ func SymbolCount(s []byte) (ret LetterCount) {
 
 func GetLetterDist(s []byte) (ret LetterDist) {
 	ret = make(LetterDist)
-	count := SymbolCount(s)
+	count := GetSymbolCount(s)
 
 	for letter, number := range count {
 		ret[letter] = float64(number / len(s))
@@ -67,9 +63,9 @@ func GetLetterDist(s []byte) (ret LetterDist) {
 //             i = 'a'
 // E is the distribution that we check agains
 // C_i is the count of the character i
-// E_i is the expected frequency of the character
+// E_i is the expected count of the character using a given distribution
 func ChiSquaredTestDist(s string, e LetterDist) (ret float64) {
-	var count LetterCount = SymbolCount([]byte(s))
+	var count LetterCount = GetSymbolCount([]byte(s))
 
 	for symbol, freqE := range e {
 		countE := freqE * float64(len(s))

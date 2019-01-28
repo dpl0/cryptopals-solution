@@ -12,7 +12,7 @@ type Decrypted struct {
 }
 
 func (d Decrypted) String() string {
-    return fmt.Sprintf("Key: %v\nData: \"+%q\"\nScore: %v\n", d.Key, d.Data, d.Score)
+    return fmt.Sprintf("Key: %v\nData: %q\nScore: %v\n", d.Key, d.Data, d.Score)
 }
 
 
@@ -53,9 +53,7 @@ func DecryptOneByteXorDist(hexCrypt []byte, dist LetterDist) Decrypted {
 		key := byte(i)
 		decrypted := ArrayXor([]byte{key}, hexCrypt)
 		score := ChiSquaredTestDist(string(decrypted), dist)
-        decriptedSet[i] = Decrypted{[]byte{key}, decrypted, score}
+		decriptedSet[i] = Decrypted{[]byte{key}, decrypted, score}
 	}
-    fmt.Println(decriptedSet)
-
 	return GetBestDecrypted(decriptedSet)
 }
