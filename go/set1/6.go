@@ -60,6 +60,7 @@ import (
 	"bufio"
 	"fmt"
 	mcc "github.com/dpl0/mcclib"
+	"math"
 	"os"
 	"reflect"
 )
@@ -160,7 +161,7 @@ func testHammingDistance() {
 func testBase64Decoding() {
 	testBase64Decoding := func(base64 string, str string) {
 		decoded := string(mcc.Base642Bytes(base64))
-		if !mcc.AreEqualStrings(decoded, str) {
+		if decoded != str {
 			os.Exit(1)
 		}
 	}
@@ -172,6 +173,14 @@ func testBase64Decoding() {
 	mcc.PrintCorrectly("Base64 decoding 2/3")
 	testBase64Decoding("aGkgdGhlcg==", "hi ther")
 	mcc.PrintCorrectly("Base64 decoding 3/3")
+}
+
+func averageScores(numbers []float64) (ret float64) {
+	for _, v := range numbers {
+		ret += v
+	}
+	ret /= float64(len(numbers))
+	return
 }
 
 func main() {
@@ -241,35 +250,70 @@ func main() {
 		fmt.Println("Minor three distances: ", minorThreeDistances)
 	}
 
+	transposedData := make(map[int][][]byte)
+    decryptionResults := make(map[int][]mcc.Decrypted)
 	{
 		// 5. Break the ciphertext into blocks of KEYSIZE length.
 		blocks := make(map[int][][]byte)
+        scores := make(map[int][]float64)
 		for _, keysize := range probableKeySizes {
 			blocks[keysize] = BlockData(fileTextDecoded, keysize)
 		}
 
 		// 6. Transpose the blocks: make a block that is the 1st byte of
 		// every block, and a block that is the 2nd byte of every block...
-		transposedData := make(map[int][][]byte)
-		// decryptedData := make(map[int][]mcc.DecryptResult)
 		for keysize, blocked := range blocks {
 			data := TransposeData(blocked)
 			transposedData[keysize] = data
 			fmt.Println("Attemting with transposed blocks of keysize: ", keysize)
-			// 7. Solve each block as if it was single-character XOR.
+			// 7. Solve each block as if it was single-character XOR, get the
+			// keysize that produces the best-looking histogram.
 			for _, block := range data {
-				results := mcc.DecryptOneByteXor(block)
-				for _, res := range results {
-					fmt.Printf("%s\n", res.Data)
-				}
-				os.Exit(1)
+                decrypt := mcc.DecryptOneByteXor(block)
+                decryptionResults[keysize] = append(decryptionResults[keysize], decrypt)
+				scores[keysize] = append(scores[keysize], decrypt.Score)
+				scores[keysize] = []float64{averageScores(scores[keysize])}
 			}
 		}
 
-		// 8. For each block, the single-byte XOR key that produces the best
-		// looking histogram is the repeating-key XOR key byte for that block.
-		// Put them together and you have the key.
+		// Choose best keysize
+		var finalKeysize int
+		{
+			var keysize int = 0
+			var lower float64 = math.Inf(1)
+			for k, score := range scores {
+				if score[0] < lower {
+					keysize = k
+					lower = score[0]
+				}
+			}
+			finalKeysize = keysize
+
+			if finalKeysize == 0 {
+				fmt.Println("ERROR: Haven't found valid key!")
+				os.Exit(1)
+			}
+		}
+		fmt.Println("Best keysize: ", finalKeysize)
+
+        // Remove remaining data
+        for k, _ := range decryptionResults {
+            if k != finalKeysize {
+                delete(decryptionResults, k)
+            }
+        }
 	}
+
+    fmt.Println(decryptionResults)
+
+    // Delete all the results that we no longer need
+    {
+    }
+
+	// 8. For each block, the single-byte XOR key that produces the best
+	// looking histogram is the repeating-key XOR key byte for that block.
+	// Put them together and you have the key.
+
 
 	return
 }
