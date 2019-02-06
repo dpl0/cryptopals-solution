@@ -12,7 +12,7 @@ type Decrypted struct {
 }
 
 func (d Decrypted) String() string {
-    return fmt.Sprintf("Key: %v\nData: %q\nScore: %v\n", d.Key, d.Data, d.Score)
+    return fmt.Sprintf("\n\tKey: %v\n\tData: %q\n\tScore: %v\n", d.Key, d.Data, d.Score)
 }
 
 
