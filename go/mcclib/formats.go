@@ -113,7 +113,12 @@ func Base642Bytes(base64 string) (data []byte) {
 	return data
 }
 
-// Convert a binary array to its string representation.
+// Easy function to just handle strings
+func Base642String(base64 string) string {
+    return string(Base642Bytes(base64))
+}
+
+// Convert a binary array to its string representation in hexadecimal
 func Bytes2String(data []byte) (ret string) {
 	if len(data)%2 != 0 {
 		HandleError(errors.New("Hex2Strings: Size is not multiple of 2\n"))
@@ -154,3 +159,4 @@ func String2Bytes(s string) (ret []byte) {
 
 	return ret
 }
+

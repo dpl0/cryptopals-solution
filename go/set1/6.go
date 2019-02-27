@@ -183,6 +183,78 @@ func averageScores(numbers []float64) (ret float64) {
 	return
 }
 
+	// // Find best keysize
+	// // TODO - Eventually, put this in some function
+	// // 1. Let KEYSIZE be the guessed length of the key; try from 2 to 40
+	// var probableKeySizes [3]int
+	// {
+	// 	minorThreeDistances := [3]float32{1000, 1000, 1000}
+	// 	for keysize := 2; keysize <= 40; keysize++ {
+	// 		// 3. Take the first and second KEYSIZE worth of bytes, and find
+	// 		// the normalized (dividing by keysize) edit distance between them.
+	// 		// 4. The KEYSIZE with the min edit dist is probably the key.  You
+	// 		// could proceed perhaps with the smallest 2-3.  Or take 4 KEYSIZE
+	// 		// blocks instead of 2 and average the distances.
+	// 		firstBlock := fileTextDecoded[:keysize]
+	// 		secondBlock := fileTextDecoded[keysize : keysize*2]
+	// 		thirdBlock := fileTextDecoded[keysize*2 : keysize*3]
+	// 		fourthBlock := fileTextDecoded[keysize*3 : keysize*4]
+	// 		editDistance1 := float32(mcc.HammingDistance(firstBlock, secondBlock)) / float32(keysize)
+	// 		editDistance2 := float32(mcc.HammingDistance(secondBlock, thirdBlock)) / float32(keysize)
+	// 		editDistance3 := float32(mcc.HammingDistance(thirdBlock, fourthBlock)) / float32(keysize)
+	// 		editDistance := (editDistance1 + editDistance2 + editDistance3) / 3
+
+	// 		// We could either use this, or a map with all the values and
+	// 		// search later, but this is a little bit more complex, but much
+	// 		// simpler to implement (Maybe I just don't wan't to use
+	// 		// storage/heap :P)
+	// 		if editDistance < minorThreeDistances[0] {
+	// 			minorThreeDistances[0] = editDistance
+	// 			probableKeySizes[0] = keysize
+	// 		} else if editDistance < minorThreeDistances[1] {
+	// 			minorThreeDistances[1] = editDistance
+	// 			probableKeySizes[1] = keysize
+	// 		} else if editDistance < minorThreeDistances[2] {
+	// 			minorThreeDistances[2] = editDistance
+	// 			probableKeySizes[2] = keysize
+	// 		}
+	// 	}
+
+	// 	fmt.Println("Probable key sizes: ", probableKeySizes)
+	// 	fmt.Println("Minor three distances: ", minorThreeDistances)
+	// }
+
+
+// Returns the calculated score of each keysize from min to max for data.
+func calcKeySize(min int, max int, data []byte) (ret map[int]float32) {
+    ret = make(map[int]float32)
+
+    for i := min; i <= max; i++ {
+        fmt.Println("\ti:", i)
+        blocked := BlockData(data, i)
+        fmt.Println("\tAfter blocking:", i)
+        scores := make([]float32, len(blocked))
+
+        for j := 0; j <= len(blocked); j += 2 {
+            if j+1 > len(blocked) { continue }
+            scores[j] = float32(mcc.HammingDistance(blocked[j], blocked[j+1])) / float32(j)
+        }
+
+        fmt.Println("\tscores:", scores)
+
+        // Average score
+        for s := range(scores) {
+            ret[i] += float32(s)
+        }
+        ret[i] /= float32(max-min)
+    }
+
+    fmt.Println(ret)
+    os.Exit(1)
+
+    return ret
+}
+
 func main() {
 	var fileText string
 	fmt.Println("First of all, execute some tests")
@@ -209,46 +281,12 @@ func main() {
 
 	fileTextDecoded := mcc.Base642Bytes(fileText)
 
+
 	// Find best keysize
-	// TODO - Eventually, put this in some function
 	// 1. Let KEYSIZE be the guessed length of the key; try from 2 to 40
-	var probableKeySizes [3]int
-	{
-		minorThreeDistances := [3]float32{1000, 1000, 1000}
-		for keysize := 2; keysize <= 40; keysize++ {
-			// 3. Take the first and second KEYSIZE worth of bytes, and find
-			// the normalized (dividing by keysize) edit distance between them.
-			// 4. The KEYSIZE with the min edit dist is probably the key.  You
-			// could proceed perhaps with the smallest 2-3.  Or take 4 KEYSIZE
-			// blocks instead of 2 and average the distances.
-			firstBlock := fileTextDecoded[:keysize]
-			secondBlock := fileTextDecoded[keysize : keysize*2]
-			thirdBlock := fileTextDecoded[keysize*2 : keysize*3]
-			fourthBlock := fileTextDecoded[keysize*3 : keysize*4]
-			editDistance1 := float32(mcc.HammingDistance(firstBlock, secondBlock)) / float32(keysize)
-			editDistance2 := float32(mcc.HammingDistance(secondBlock, thirdBlock)) / float32(keysize)
-			editDistance3 := float32(mcc.HammingDistance(thirdBlock, fourthBlock)) / float32(keysize)
-			editDistance := (editDistance1 + editDistance2 + editDistance3) / 3
+    fmt.Println("Before calcKeySize")
+    keysizes := calcKeySize(2, 40, fileTextDecoded)
 
-			// We could either use this, or a map with all the values and
-			// search later, but this is a little bit more complex, but much
-			// simpler to implement (Maybe I just don't wan't to use
-			// storage/heap :P)
-			if editDistance < minorThreeDistances[0] {
-				minorThreeDistances[0] = editDistance
-				probableKeySizes[0] = keysize
-			} else if editDistance < minorThreeDistances[1] {
-				minorThreeDistances[1] = editDistance
-				probableKeySizes[1] = keysize
-			} else if editDistance < minorThreeDistances[2] {
-				minorThreeDistances[2] = editDistance
-				probableKeySizes[2] = keysize
-			}
-		}
-
-		fmt.Println("Probable key sizes: ", probableKeySizes)
-		fmt.Println("Minor three distances: ", minorThreeDistances)
-	}
 
 	transposedData := make(map[int][][]byte)
     decryptionResults := make(map[int][]mcc.Decrypted)
@@ -256,8 +294,8 @@ func main() {
 		// 5. Break the ciphertext into blocks of KEYSIZE length.
 		blocks := make(map[int][][]byte)
         scores := make(map[int][]float64)
-		for _, keysize := range probableKeySizes {
-			blocks[keysize] = BlockData(fileTextDecoded, keysize)
+		for k, _ := range keysizes {
+			blocks[k] = BlockData(fileTextDecoded, k)
 		}
 
 		// 6. Transpose the blocks: make a block that is the 1st byte of
@@ -296,24 +334,24 @@ func main() {
 		}
 		fmt.Println("Best keysize: ", finalKeysize)
 
-        // Remove remaining data
-        for k, _ := range decryptionResults {
-            if k != finalKeysize {
-                delete(decryptionResults, k)
-            }
-        }
-	}
-
-    fmt.Println(decryptionResults)
-
-    // Delete all the results that we no longer need
+    var key []byte
+    var decrypted string
     {
+        for _, v := range decryptionResults[finalKeysize] {
+            key = append(key, v.Key[0])
+        }
+        decrypted = string(mcc.ArrayXor(key, fileTextDecoded))
     }
+
+    fmt.Printf("Key: \"%s\"\n", key)
+    fmt.Println("Decrypted: \n", decrypted)
+
 
 	// 8. For each block, the single-byte XOR key that produces the best
 	// looking histogram is the repeating-key XOR key byte for that block.
 	// Put them together and you have the key.
 
+	}
 
 	return
 }
